@@ -126,4 +126,3 @@ El Admin inicial se crea con PIN `0000`. **Cámbialo desde el panel de usuarios.
 | POST | `/api/splits/<id>/assign` | Asigna split a clientes |
 | GET/PUT | `/api/week_plan` | Plan semanal |
 | GET/POST/DELETE | `/api/workouts` | Historial de entrenamientos |
-# gym

@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: gymlog
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: MONGODB_URI
+        value: mongodb+srv://joard9194_db_user:ujicMmsD8QYLxYrP@cluster0.9qycdz3.mongodb.net/gymlog?retryWrites=true&w=majority&appName=Cluster0
+      - key: MONGODB_DB
+        value: gymlog
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: "*"
