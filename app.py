@@ -11,8 +11,17 @@ load_dotenv()
 def create_app():
     app = Flask(__name__, static_folder="static", static_url_path="")
     app.secret_key = os.environ.get("SECRET_KEY", "gymlog-dev-secret-change-me")
-    app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-    app.config["SESSION_COOKIE_SECURE"]   = os.environ.get("FLASK_ENV") == "production"
+
+    is_prod = os.environ.get("FLASK_ENV") == "production"
+    app.config["SESSION_COOKIE_HTTPONLY"] = True
+    app.config["SESSION_COOKIE_SAMESITE"] = "None" if is_prod else "Lax"
+    app.config["SESSION_COOKIE_SECURE"]   = is_prod
+    app.config["SESSION_COOKIE_NAME"]     = "gymlog_session"
+
+    # Trust Render's proxy headers (HTTPS)
+    if is_prod:
+        from werkzeug.middleware.proxy_fix import ProxyFix
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
     CORS(app, supports_credentials=True,
          origins=os.environ.get("CORS_ORIGINS", "*").split(","))

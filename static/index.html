@@ -584,10 +584,28 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 <script>
 // ══════════════════════ API HELPERS ══════════════════════
 const api = {
-  async get(path){ const r=await fetch(path); if(r.status===401){showProfileScreen();return null;} return r.json(); },
-  async post(path,body){ const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); if(r.status===401){showProfileScreen();return null;} return r.json(); },
-  async put(path,body){ const r=await fetch(path,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); if(r.status===401){showProfileScreen();return null;} return r.json(); },
-  async del(path){ const r=await fetch(path,{method:'DELETE'}); if(r.status===401){showProfileScreen();return null;} return r.json(); }
+  async get(path){
+    const r=await fetch(path,{credentials:'include'});
+    if(r.status===401){showProfileScreen();return null;}
+    return r.json();
+  },
+  async post(path,body){
+    const r=await fetch(path,{method:'POST',credentials:'include',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(r.status===401){showProfileScreen();return null;}
+    return r.json();
+  },
+  async put(path,body){
+    const r=await fetch(path,{method:'PUT',credentials:'include',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(r.status===401){showProfileScreen();return null;}
+    return r.json();
+  },
+  async del(path){
+    const r=await fetch(path,{method:'DELETE',credentials:'include'});
+    if(r.status===401){showProfileScreen();return null;}
+    return r.json();
+  }
 };
 
 // ══════════════════════ STATE ══════════════════════
@@ -763,9 +781,12 @@ function pinDel(){ if(pinBuffer.length>0){ pinBuffer=pinBuffer.slice(0,-1); upda
 function pinCancel(){ document.getElementById('pin-overlay').classList.add('hidden'); pinBuffer=''; }
 
 async function doLogin(uid, pin){
-  const res = await fetch('/api/auth/login',{method:'POST',
+  const res = await fetch('/api/auth/login',{
+    method:'POST',
+    credentials:'include',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({user_id:uid, pin})}).then(r=>r.json());
+    body:JSON.stringify({user_id:uid, pin})
+  }).then(r=>r.json()).catch(()=>({error:'Error de red'}));
   if(res.error){
     document.getElementById('pin-error').textContent=res.error;
     pinBuffer=''; updatePinDots(); return;
@@ -1915,7 +1936,7 @@ updateTimerDisplay();
 
 // Check if already logged in
 (async ()=>{
-  const me = await fetch('/api/auth/me').then(r=>r.ok?r.json():null);
+  const me = await fetch('/api/auth/me',{credentials:'include'}).then(r=>r.ok?r.json():null).catch(()=>null);
   if(me && !me.error){
     STATE.currentUser=me;
     updateUserBar();
