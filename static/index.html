@@ -222,15 +222,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   <!-- SPLITS -->
   <div id="view-splits" class="view">
     <div class="topbar">
-      <div class="topbar-title" id="splits-title">Splits</div>
+      <div class="topbar-title" id="splits-title">Entrenamientos</div>
       <button class="btn btn-accent" style="padding:6px 14px;font-size:13px" onclick="openSplitEditor()">+ Nuevo</button>
     </div>
     <div class="scroll-area">
       <div id="splits-context-banner" style="display:none;background:rgba(124,109,250,.08);border:1px solid rgba(124,109,250,.2);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:12px;font-size:12px;color:var(--accent2)"></div>
-      <div class="sec-label" id="splits-list-label">Mis splits</div>
+      <div class="sec-label" id="splits-list-label">Mis entrenamientos</div>
       <div id="splits-list"></div>
       <div class="divider"></div>
-      <div class="sec-label" id="week-assign-label">Asignar días</div>
+      <div class="sec-label" id="week-assign-label">Asignar días de la semana</div>
       <div id="week-assign"></div>
     </div>
   </div>
@@ -379,11 +379,11 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   <div id="view-split-editor" class="view">
     <div class="topbar">
       <button class="topbar-back" onclick="goBack('view-splits')">←</button>
-      <div class="topbar-title" id="split-editor-title">Nuevo split</div>
+      <div class="topbar-title" id="split-editor-title">Nuevo entrenamiento</div>
     </div>
     <div class="scroll-area">
       <div class="form-group">
-        <label class="form-label">Nombre del split</label>
+        <label class="form-label">Nombre del entrenamiento</label>
         <input class="form-input" id="split-name-input" placeholder="ej. Pectoral + Tríceps, Piernas…">
       </div>
       <div class="form-group">
@@ -392,12 +392,12 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       </div>
       <div class="divider"></div>
       <div class="sec-label">Ejercicios</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Toca para agregar al split.</p>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Toca para agregar al entrenamiento.</p>
       <div id="editor-ex-picker"></div>
       <div class="divider"></div>
       <div class="sec-label">Orden</div>
       <div id="editor-order-list"></div>
-      <button class="btn btn-accent btn-block" style="margin-top:14px" onclick="saveSplit()">Guardar split</button>
+      <button class="btn btn-accent btn-block" style="margin-top:14px" onclick="saveSplit()">Guardar entrenamiento</button>
     </div>
   </div>
 
@@ -425,7 +425,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     </button>
     <button class="nav-btn" onclick="navTo('view-splits',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      <span>Splits</span>
+      <span>Entrenamientos</span>
     </button>
     <button class="nav-btn" onclick="navTo('view-exercises',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
@@ -570,9 +570,9 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 <!-- MODAL: ASSIGN SPLIT TO CLIENTS -->
 <div class="modal-overlay" id="modal-assign-split">
   <div class="modal-box">
-    <div class="modal-title">Asignar split a clientes</div>
+    <div class="modal-title">Asignar entrenamiento a clientes</div>
     <div style="font-size:13px;color:var(--muted);margin-bottom:4px" id="assign-split-name"></div>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Se creará una copia del split en el perfil de cada cliente seleccionado.</p>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Se creará una copia del entrenamiento en el perfil de cada cliente seleccionado.</p>
     <div id="assign-clients-list" style="margin-bottom:14px;max-height:260px;overflow-y:auto"></div>
     <button class="btn btn-accent btn-block" onclick="confirmAssignSplit()">Asignar ✓</button>
     <button class="btn-ghost btn-block" style="margin-top:8px;width:100%;text-align:center" onclick="closeModal('modal-assign-split')">Cancelar</button>
@@ -677,7 +677,7 @@ function toggleMuscleGroup(el, mg){
 function openSplitEditor(){
   editSplitId=null; selectedExercises=[]; selectedMuscleGroups=new Set();
   document.getElementById('split-name-input').value='';
-  document.getElementById('split-editor-title').textContent='Nuevo split';
+  document.getElementById('split-editor-title').textContent='Nuevo entrenamiento';
   renderTypePills();
   renderEditorPicker();
   renderEditorOrder();
@@ -695,7 +695,7 @@ function editSplit(id){
     parts.forEach(t=>{ if(STATE.exercises[t]) selectedMuscleGroups.add(t); });
   }
   document.getElementById('split-name-input').value=s.name;
-  document.getElementById('split-editor-title').textContent='Editar split';
+  document.getElementById('split-editor-title').textContent='Editar entrenamiento';
   renderTypePills();
   renderEditorPicker();
   renderEditorOrder();
@@ -1005,8 +1005,8 @@ function renderHomeView(){
     return;
   }
   if(!sp){
-    tb.innerHTML=`<div class="card" style="text-align:center;padding:24px"><div style="font-size:13px;color:var(--muted)">Sin split asignado para hoy.</div>
-    <button class="btn btn-outline" style="margin-top:12px;font-size:13px" onclick="navTo('view-splits',document.querySelectorAll('.nav-btn')[1])">Configurar splits →</button></div>`;
+    tb.innerHTML=`<div class="card" style="text-align:center;padding:24px"><div style="font-size:13px;color:var(--muted)">Sin entrenamiento asignado para hoy.</div>
+    <button class="btn btn-outline" style="margin-top:12px;font-size:13px" onclick="navTo('view-splits',document.querySelectorAll('.nav-btn')[1])">Configurar entrenamientos →</button></div>`;
     return;
   }
   const muscles=[...new Set(sp.exercises.map(e=>e.muscle))];
@@ -1040,7 +1040,7 @@ function renderSplitsView(){
   const canManage = u && (u.role==='admin' || u.role==='profesor');
 
   if(!STATE.splits.length){
-    sl.innerHTML=`<div class="empty-state"><div class="empty-icon">🗂️</div><p>Sin splits. Crea uno.</p></div>`;
+    sl.innerHTML=`<div class="empty-state"><div class="empty-icon">🗂️</div><p>Sin entrenamientos. Crea uno.</p></div>`;
   } else {
     sl.innerHTML=STATE.splits.map(s=>{
       const ownerBadge = s.owner_id
@@ -1077,13 +1077,13 @@ function renderSplitsView(){
   const assignLabel = document.getElementById('week-assign-label');
   if(STATE.viewingAs){
     banner.style.display='';
-    banner.innerHTML=`🧑‍🏫 Gestionando splits de <strong>${STATE.viewingAs.name}</strong> — los cambios afectan su perfil`;
-    listLabel.textContent='Splits de '+STATE.viewingAs.name;
+    banner.innerHTML=`🧑‍🏫 Gestionando entrenamientos de <strong>${STATE.viewingAs.name}</strong> — los cambios afectan su perfil`;
+    listLabel.textContent='Entrenamientos de '+STATE.viewingAs.name;
     assignLabel.textContent='Semana de '+STATE.viewingAs.name;
   } else {
     banner.style.display='none';
-    listLabel.textContent='Mis splits';
-    assignLabel.textContent='Asignar días';
+    listLabel.textContent='Mis entrenamientos';
+    assignLabel.textContent='Asignar días de la semana';
   }
 }
 
@@ -1094,11 +1094,11 @@ async function assignDay(dow, val){
   renderHomeView();
 }
 async function deleteSplitBtn(id){
-  if(!confirm('¿Eliminar split?')) return;
+  if(!confirm('¿Eliminar entrenamiento?')) return;
   await api.del(`/api/splits/${id}`);
   STATE.splits = STATE.splits.filter(s=>s.id!==id);
   Object.keys(STATE.weekPlan).forEach(k=>{if(STATE.weekPlan[k]===id) STATE.weekPlan[k]=null;});
-  renderSplitsView(); renderHomeView(); toast('Split eliminado');
+  renderSplitsView(); renderHomeView(); toast('Entrenamiento eliminado');
 }
 
 // ══════════════════════ ASSIGN SPLIT ══════════════════════
@@ -1136,14 +1136,14 @@ async function confirmAssignSplit(){
   const userIds = checked.map(c=>c.value);
   await api.post(`/api/splits/${assignSplitId}/assign`, {user_ids: userIds});
   closeModal('modal-assign-split');
-  toast(`Split asignado a ${userIds.length} perfil${userIds.length>1?'es':''} ✓`);
+  toast(`Entrenamiento asignado a ${userIds.length} perfil${userIds.length>1?'es':''} ✓`);
 }
 
 
 function openSplitEditor(){
   editSplitId=null; selectedExercises=[]; splitType='push';
   document.getElementById('split-name-input').value='';
-  document.getElementById('split-editor-title').textContent='Nuevo split';
+  document.getElementById('split-editor-title').textContent='Nuevo entrenamiento';
   document.querySelectorAll('#type-pills .pill').forEach(p=>p.classList.toggle('sel',p.dataset.type==='push'));
   renderEditorPicker(); renderEditorOrder();
   showView('view-split-editor');
@@ -1152,7 +1152,7 @@ function editSplit(id){
   const s=STATE.splits.find(x=>x.id===id);
   editSplitId=id; selectedExercises=[...s.exercises]; splitType=s.type;
   document.getElementById('split-name-input').value=s.name;
-  document.getElementById('split-editor-title').textContent='Editar split';
+  document.getElementById('split-editor-title').textContent='Editar entrenamiento';
   document.querySelectorAll('#type-pills .pill').forEach(p=>p.classList.toggle('sel',p.dataset.type===s.type));
   renderEditorPicker(); renderEditorOrder();
   showView('view-split-editor');
@@ -1185,14 +1185,14 @@ function moveDown(i){ if(i===selectedExercises.length-1) return; [selectedExerci
 
 async function saveSplit(){
   const name=document.getElementById('split-name-input').value.trim();
-  if(!name){ alert('Ponle nombre al split'); return; }
+  if(!name){ alert('Ponle nombre al entrenamiento'); return; }
   if(!selectedExercises.length){ alert('Agrega al menos un ejercicio'); return; }
   const type=[...selectedMuscleGroups].join(',')||'full';
   const split={id: editSplitId||('s'+Date.now()), name, type, exercises:selectedExercises, user_id: activeUid()};
   await api.post('/api/splits', split);
   const idx=STATE.splits.findIndex(s=>s.id===split.id);
   if(idx>=0) STATE.splits[idx]=split; else STATE.splits.push(split);
-  toast('Split guardado ✓');
+  toast('Entrenamiento guardado ✓');
   goBack('view-splits');
   renderHomeView();
 }
@@ -1565,7 +1565,7 @@ function buildSplitExerciseHTML(workouts, prefix){
   // Group workouts by splitName
   const splitMap={};
   workouts.forEach(w=>{
-    const key=w.splitName||'Sin split';
+    const key=w.splitName||'Sin entrenamiento';
     if(!splitMap[key]) splitMap[key]=[];
     splitMap[key].push(w);
   });
@@ -1948,3 +1948,4 @@ updateTimerDisplay();
 </script>
 </body>
 </html>
+
