@@ -6,7 +6,7 @@
 <title>GymLog</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e0e11;--surface:#16161a;--surface2:#1e1e24;--border:#2a2a33;--accent:#c8f25e;--accent2:#7c6dfa;--accent3:#ff6b6b;--text:#f0f0f5;--muted:#6b6b80;--muted2:#3a3a48;--push:#ff6b6b;--pull:#7c6dfa;--legs:#f5a623;--core:#4ecdc4;--full:#c8f25e;--radius:14px;--radius-sm:8px}
+:root{--bg:#0e0e11;--surface:#16161a;--surface2:#1e1e24;--border:#2a2a33;--accent:#c8f25e;--accent2:#7c6dfa;--accent3:#ff6b6b;--text:#f0f0f5;--muted:#6b6b80;--muted2:#3a3a48;--push:#ff6b6b;--pull:#7c6dfa;--legs:#f5a623;--core€:#4ecdc4;--full:#c8f25e;--radius:14px;--radius-sm:8px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden}
 h1,h2,h3{font-family:'Syne',sans-serif}
@@ -114,88 +114,6 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .loading{display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:14px}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 18px;font-size:13px;color:var(--text);z-index:200;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.show{opacity:1}
-/* ── Profile / Login screen ── */
-.profile-screen{position:fixed;inset:0;background:var(--bg);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
-.profile-screen.hidden{display:none}
-.profile-logo{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent);margin-bottom:6px;letter-spacing:-1px}
-.profile-sub{font-size:13px;color:var(--muted);margin-bottom:32px}
-.profile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:340px;margin-bottom:24px}
-.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 10px;text-align:center;cursor:pointer;transition:all .15s;position:relative}
-.profile-card:hover{border-color:var(--accent);background:var(--surface2)}
-.profile-avatar{font-size:28px;margin-bottom:6px}
-.profile-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.profile-role{font-size:10px;color:var(--muted);margin-top:2px}
-.profile-pin-dot{width:6px;height:6px;border-radius:50%;background:var(--muted2);position:absolute;top:8px;right:8px}
-/* PIN modal */
-.pin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:400;display:flex;align-items:center;justify-content:center}
-.pin-overlay.hidden{display:none}
-.pin-box{background:var(--surface);border-radius:var(--radius);padding:24px 20px;width:280px;text-align:center}
-.pin-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:4px}
-.pin-sub{font-size:12px;color:var(--muted);margin-bottom:18px}
-.pin-dots{display:flex;gap:10px;justify-content:center;margin-bottom:20px}
-.pin-dot-disp{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);transition:all .15s}
-.pin-dot-disp.filled{background:var(--accent);border-color:var(--accent)}
-.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.pin-key{padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:18px;font-weight:600;cursor:pointer;font-family:'Syne',sans-serif;color:var(--text);transition:all .15s}
-.pin-key:hover{background:var(--border);border-color:var(--accent)}
-.pin-key.del{font-size:14px;color:var(--muted)}
-.pin-error{color:var(--accent3);font-size:12px;margin-top:8px;min-height:18px}
-/* User bar at top */
-.user-bar{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 8px;border-radius:20px;transition:background .15s}
-.user-bar:hover{background:var(--surface2)}
-.user-bar-avatar{font-size:16px}
-.user-bar-name{font-size:12px;font-weight:600;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.user-bar-role{font-size:10px;color:var(--muted)}
-/* Users management view */
-.role-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
-.role-admin{background:rgba(200,242,94,.15);color:var(--accent)}
-.role-profesor{background:rgba(124,109,250,.15);color:var(--accent2)}
-.role-cliente{background:rgba(78,205,196,.15);color:var(--core)}
-/* Viewing-as banner */
-.viewing-banner{background:rgba(124,109,250,.12);border-bottom:1px solid rgba(124,109,250,.3);padding:7px 16px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--accent2);flex-shrink:0}
-.viewing-banner.hidden{display:none}
-.hist-accordion{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden}
-.hist-acc-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px;font-weight:600;background:var(--surface);user-select:none;transition:background .15s}
-.hist-acc-header:hover{background:var(--surface2)}
-.hist-acc-arrow{font-size:18px;color:var(--muted);transition:transform .2s;display:inline-block}
-.hist-accordion.open>.hist-acc-header .hist-acc-arrow{transform:rotate(180deg)}
-.hist-acc-body{display:none;border-top:1px solid var(--border);background:var(--surface)}
-.hist-accordion.open>.hist-acc-body{display:block}
-/* Nested: split-level accordion (NVL 1.x) */
-.hist-split-acc{border-bottom:1px solid var(--border)}
-.hist-split-acc:last-child{border-bottom:none}
-.hist-split-header{padding:11px 16px 11px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:13px;font-weight:600;background:var(--surface2);user-select:none;transition:background .15s;gap:8px}
-.hist-split-header:hover{background:var(--border)}
-.hist-split-arrow{font-size:14px;color:var(--muted);transition:transform .2s;flex-shrink:0}
-.hist-split-acc.open .hist-split-arrow{transform:rotate(180deg)}
-.hist-split-body{display:none;background:var(--surface)}
-.hist-split-acc.open .hist-split-body{display:block}
-/* Exercise mini-chart row (NVL 1.1.x) */
-.hist-ex-row{padding:10px 14px 6px;border-bottom:1px solid var(--border)}
-.hist-ex-row:last-child{border-bottom:none}
-.hist-ex-label{font-size:11px;font-weight:700;color:var(--text);margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
-/* Week chart */
-.hist-week-svg{width:100%;overflow:visible;display:block}
-.hist-bar-label{font-size:9px;fill:var(--muted);font-family:'DM Mono',monospace}
-.hist-bar-val{font-size:9px;font-family:'DM Mono',monospace;font-weight:600}
-.prog-chart-wrap{position:relative;margin:6px 0 24px}
-.prog-chart-svg{width:100%;overflow:visible;display:block}
-.prog-dot{cursor:pointer;transition:r .15s}
-.prog-dot:hover{r:6}
-.prog-tooltip{position:absolute;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:11px;font-family:'DM Mono',monospace;pointer-events:none;z-index:10;white-space:nowrap;opacity:0;transition:opacity .15s}
-.prog-tooltip.show{opacity:1}
-/* Rest time badge on sets */
-.rest-badge{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;display:block;margin-top:1px;opacity:.7}
-.rest-badge.good{color:var(--core)}
-.rest-badge.long{color:var(--legs)}
-/* Manual timer input */
-.timer-manual-wrap{display:flex;align-items:center;gap:6px;margin-top:8px}
-.timer-manual-wrap label{font-size:11px;color:var(--muted);white-space:nowrap}
-.timer-manual-inp{width:54px;padding:5px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;text-align:center}
-.timer-manual-inp:focus{outline:none;border-color:var(--accent)}
-/* Alarm ring animation */
-@keyframes alarmRing{0%,100%{transform:rotate(0)}15%{transform:rotate(-8deg)}30%{transform:rotate(8deg)}45%{transform:rotate(-6deg)}60%{transform:rotate(6deg)}75%{transform:rotate(-3deg)}90%{transform:rotate(3deg)}}
-.alarm-ringing{animation:alarmRing .5s ease 3}
 </style>
 </head>
 <body>
@@ -206,11 +124,6 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div class="topbar">
       <div class="topbar-title">GymLog</div>
       <span id="today-label" style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace"></span>
-      <div class="user-bar" id="user-bar-btn" onclick="showUserMenu()">
-        <span class="user-bar-avatar" id="ub-avatar">👤</span>
-        <div><div class="user-bar-name" id="ub-name">—</div>
-          <div class="user-bar-role" id="ub-role"></div></div>
-      </div>
     </div>
     <div class="scroll-area">
       <div class="sec-label">Esta semana</div>
@@ -222,15 +135,14 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   <!-- SPLITS -->
   <div id="view-splits" class="view">
     <div class="topbar">
-      <div class="topbar-title" id="splits-title">Entrenamientos</div>
+      <div class="topbar-title">Splits</div>
       <button class="btn btn-accent" style="padding:6px 14px;font-size:13px" onclick="openSplitEditor()">+ Nuevo</button>
     </div>
     <div class="scroll-area">
-      <div id="splits-context-banner" style="display:none;background:rgba(124,109,250,.08);border:1px solid rgba(124,109,250,.2);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:12px;font-size:12px;color:var(--accent2)"></div>
-      <div class="sec-label" id="splits-list-label">Mis entrenamientos</div>
+      <div class="sec-label">Mis splits</div>
       <div id="splits-list"></div>
       <div class="divider"></div>
-      <div class="sec-label" id="week-assign-label">Asignar días de la semana</div>
+      <div class="sec-label">Asignar días</div>
       <div id="week-assign"></div>
     </div>
   </div>
@@ -275,22 +187,10 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="timer-preset" onclick="setTimer(90)">1:30</div>
         <div class="timer-preset" onclick="setTimer(120)">2:00</div>
         <div class="timer-preset" onclick="setTimer(180)">3:00</div>
-        <div class="timer-preset" onclick="setTimer(300)">5:00</div>
-      </div>
-      <div class="timer-manual-wrap">
-        <label>Manual:</label>
-        <input class="timer-manual-inp" id="timer-manual-min" type="number" min="0" max="59" placeholder="min">
-        <span style="color:var(--muted);font-size:13px">:</span>
-        <input class="timer-manual-inp" id="timer-manual-sec" type="number" min="0" max="59" placeholder="seg">
-        <button class="btn btn-outline" style="padding:5px 10px;font-size:12px" onclick="setTimerManual()">Set</button>
       </div>
       <div class="timer-controls">
         <button class="btn btn-outline" onclick="resetTimer()">Reiniciar</button>
         <button class="btn btn-accent" id="timer-btn" onclick="startStopTimer()" style="flex:1">▶ Iniciar</button>
-      </div>
-      <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px">
-        <span id="alarm-icon">🔔</span><span id="alarm-label">Alarma activa</span>
-        <button class="btn-ghost" style="font-size:11px;padding:2px 8px" onclick="toggleAlarm()" id="alarm-toggle-btn">Desactivar</button>
       </div>
     </div>
   </div>
@@ -298,67 +198,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   <!-- HISTORY -->
   <div id="view-history" class="view">
     <div class="topbar"><div class="topbar-title">Historial</div></div>
-    <div class="scroll-area">
-      <div id="hist-empty" class="empty-state" style="display:none"><div class="empty-icon">📋</div><p>Sin entrenamientos aún.</p></div>
-
-      <!-- NVL1: Última semana -->
-      <div class="hist-accordion" id="acc-week">
-        <div class="hist-acc-header" onclick="toggleAcc('acc-week','renderWeekAcc')">
-          <span>Última semana</span>
-          <span class="hist-acc-arrow">⌄</span>
-        </div>
-        <div class="hist-acc-body" id="body-acc-week"></div>
-      </div>
-
-      <!-- NVL2: Último mes -->
-      <div class="hist-accordion" id="acc-month">
-        <div class="hist-acc-header" onclick="toggleAcc('acc-month','renderMonthAcc')">
-          <span>Último mes</span>
-          <span class="hist-acc-arrow">⌄</span>
-        </div>
-        <div class="hist-acc-body" id="body-acc-month"></div>
-      </div>
-
-      <!-- NVL3: Rango personalizado -->
-      <div class="hist-accordion" id="acc-range">
-        <div class="hist-acc-header" onclick="toggleAcc('acc-range','renderRangeAcc')">
-          <span>Rango de fechas</span>
-          <span class="hist-acc-arrow">⌄</span>
-        </div>
-        <div class="hist-acc-body" id="body-acc-range">
-          <div style="padding:12px 14px 8px;border-bottom:1px solid var(--border)">
-            <div style="display:flex;gap:10px;align-items:flex-end">
-              <div style="flex:1">
-                <label class="form-label">Fecha inicio</label>
-                <input type="date" class="form-input" id="hist-range-from" onchange="renderRangeAcc()">
-              </div>
-              <div style="flex:1">
-                <label class="form-label">Fecha fin</label>
-                <input type="date" class="form-input" id="hist-range-to" onchange="renderRangeAcc()">
-              </div>
-            </div>
-          </div>
-          <div id="body-acc-range-content"></div>
-        </div>
-      </div>
-
-      <!-- NVL4: Por ejercicio -->
-      <div class="hist-accordion" id="acc-exercise">
-        <div class="hist-acc-header" onclick="toggleAcc('acc-exercise','renderExAcc')">
-          <span>Por ejercicio</span>
-          <span class="hist-acc-arrow">⌄</span>
-        </div>
-        <div class="hist-acc-body" id="body-acc-exercise">
-          <div style="padding:12px 14px 8px;border-bottom:1px solid var(--border)">
-            <select class="form-input" id="hist-ex-select" onchange="renderExAcc()">
-              <option value="">Selecciona un ejercicio…</option>
-            </select>
-          </div>
-          <div id="body-acc-exercise-content"></div>
-        </div>
-      </div>
-
-    </div>
+    <div class="scroll-area"><div id="history-content"></div></div>
   </div>
 
   <!-- PROGRESS -->
@@ -379,43 +219,34 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   <div id="view-split-editor" class="view">
     <div class="topbar">
       <button class="topbar-back" onclick="goBack('view-splits')">←</button>
-      <div class="topbar-title" id="split-editor-title">Nuevo entrenamiento</div>
+      <div class="topbar-title" id="split-editor-title">Nuevo split</div>
     </div>
     <div class="scroll-area">
       <div class="form-group">
-        <label class="form-label">Nombre del entrenamiento</label>
-        <input class="form-input" id="split-name-input" placeholder="ej. Pectoral + Tríceps, Piernas…">
+        <label class="form-label">Nombre del split</label>
+        <input class="form-input" id="split-name-input" placeholder="ej. Push A, Legs, Upper…">
       </div>
       <div class="form-group">
-        <label class="form-label">Grupos musculares <span style="font-size:10px;color:var(--muted);font-weight:400">(selecciona uno o varios)</span></label>
-        <div id="type-pills" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+        <label class="form-label">Tipo</label>
+        <div id="type-pills">
+          <span class="pill sel" data-type="push" onclick="selType(this)">💪 Push</span>
+          <span class="pill" data-type="pull" onclick="selType(this)">🔄 Pull</span>
+          <span class="pill" data-type="legs" onclick="selType(this)">🦵 Legs</span>
+          <span class="pill" data-type="full" onclick="selType(this)">⚡ Full Body</span>
+          <span class="pill" data-type="core" onclick="selType(this)">🎯 Core</span>
+          <span class="pill" data-type="upper" onclick="selType(this)">↑ Upper</span>
+          <span class="pill" data-type="lower" onclick="selType(this)">↓ Lower</span>
+        </div>
       </div>
       <div class="divider"></div>
-      <div class="sec-label">Ejercicios</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Toca para agregar al entrenamiento.</p>
+      <div class="sec-label">Selecciona ejercicios</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Toca para agregar al split.</p>
       <div id="editor-ex-picker"></div>
       <div class="divider"></div>
       <div class="sec-label">Orden</div>
       <div id="editor-order-list"></div>
-      <button class="btn btn-accent btn-block" style="margin-top:14px" onclick="saveSplit()">Guardar entrenamiento</button>
+      <button class="btn btn-accent btn-block" style="margin-top:14px" onclick="saveSplit()">Guardar split</button>
     </div>
-  </div>
-
-  <!-- USERS (admin/profesor) -->
-  <div id="view-users" class="view">
-    <div class="topbar">
-      <button class="topbar-back" onclick="navTo('view-home',document.querySelector('.nav-btn'))">←</button>
-      <div class="topbar-title">Usuarios</div>
-      <button class="btn btn-accent" style="padding:6px 14px;font-size:13px" onclick="openCreateUser()">+ Nuevo</button>
-    </div>
-    <div class="scroll-area" id="users-list-content"></div>
-  </div>
-
-  <!-- VIEWING-AS banner (shown when admin/profesor views another user) -->
-  <div class="viewing-banner hidden" id="viewing-banner">
-    <span id="viewing-banner-avatar"></span>
-    <span id="viewing-banner-text"></span>
-    <button class="btn-ghost" style="margin-left:auto;font-size:11px;padding:2px 10px" onclick="stopViewingAs()">← Volver a mí</button>
   </div>
 
   <nav class="bottom-nav" id="main-nav">
@@ -425,7 +256,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     </button>
     <button class="nav-btn" onclick="navTo('view-splits',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      <span>Entrenamientos</span>
+      <span>Splits</span>
     </button>
     <button class="nav-btn" onclick="navTo('view-exercises',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
@@ -440,43 +271,6 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       <span>Progresión</span>
     </button>
   </nav>
-</div>
-
-<!-- PROFILE PICKER SCREEN -->
-<div class="profile-screen" id="profile-screen">
-  <div class="profile-logo">💪 GymLog</div>
-  <div class="profile-sub">Selecciona tu perfil</div>
-  <div class="profile-grid" id="profile-grid"></div>
-  <div style="font-size:11px;color:var(--muted2);text-align:center">Toca tu nombre para entrar</div>
-</div>
-
-<!-- PIN ENTRY OVERLAY -->
-<div class="pin-overlay hidden" id="pin-overlay">
-  <div class="pin-box">
-    <div class="pin-title" id="pin-title">Ingresa tu PIN</div>
-    <div class="pin-sub" id="pin-sub">4 dígitos</div>
-    <div class="pin-dots" id="pin-dots">
-      <div class="pin-dot-disp" id="pd0"></div>
-      <div class="pin-dot-disp" id="pd1"></div>
-      <div class="pin-dot-disp" id="pd2"></div>
-      <div class="pin-dot-disp" id="pd3"></div>
-    </div>
-    <div class="pin-keypad">
-      <button class="pin-key" onclick="pinKey('1')">1</button>
-      <button class="pin-key" onclick="pinKey('2')">2</button>
-      <button class="pin-key" onclick="pinKey('3')">3</button>
-      <button class="pin-key" onclick="pinKey('4')">4</button>
-      <button class="pin-key" onclick="pinKey('5')">5</button>
-      <button class="pin-key" onclick="pinKey('6')">6</button>
-      <button class="pin-key" onclick="pinKey('7')">7</button>
-      <button class="pin-key" onclick="pinKey('8')">8</button>
-      <button class="pin-key" onclick="pinKey('9')">9</button>
-      <button class="pin-key del" onclick="pinCancel()">Cancelar</button>
-      <button class="pin-key" onclick="pinKey('0')">0</button>
-      <button class="pin-key del" onclick="pinDel()">⌫</button>
-    </div>
-    <div class="pin-error" id="pin-error"></div>
-  </div>
 </div>
 
 <!-- MODAL: ADD EXERCISE -->
@@ -496,236 +290,28 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   </div>
 </div>
 
-<!-- MODAL: USER MENU -->
-<div class="modal-overlay" id="modal-user-menu">
-  <div class="modal-box">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-      <div style="font-size:32px" id="umenu-avatar"></div>
-      <div><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700" id="umenu-name"></div>
-        <div id="umenu-role-badge" style="margin-top:3px"></div></div>
-    </div>
-    <div id="umenu-clients-section" style="display:none">
-      <div class="divider"></div>
-      <div class="sec-label" style="margin-bottom:8px">Ver como</div>
-      <div id="umenu-clients"></div>
-      <button class="btn btn-outline btn-block" style="margin-top:8px;font-size:13px" onclick="closeModal('modal-user-menu');navTo('view-users',null)">Gestionar usuarios →</button>
-    </div>
-    <div class="divider"></div>
-    <button class="btn btn-outline btn-block" style="margin-top:4px" onclick="doLogout()">Cambiar perfil</button>
-  </div>
-</div>
-
-<!-- MODAL: CREATE USER -->
-<div class="modal-overlay" id="modal-create-user">
-  <div class="modal-box">
-    <div class="modal-title" id="create-user-title">Nuevo usuario</div>
-    <div class="form-group">
-      <label class="form-label">Nombre</label>
-      <input class="form-input" id="cu-name" placeholder="Nombre completo">
-    </div>
-    <div class="form-group" id="cu-role-group">
-      <label class="form-label">Rol</label>
-      <select class="form-input" id="cu-role">
-        <option value="cliente">Cliente</option>
-        <option value="profesor">Profesor</option>
-        <option value="admin">Admin</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">PIN (opcional, 4 dígitos)</label>
-      <input class="form-input" id="cu-pin" type="number" placeholder="Sin PIN = acceso libre" maxlength="4">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Avatar</label>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px" id="cu-avatar-picker">
-        <span style="font-size:22px;cursor:pointer;padding:4px;border-radius:6px;border:2px solid var(--border)" onclick="selectAvatar(this,'👤')">👤</span>
-        <span style="font-size:22px;cursor:pointer;padding:4px;border-radius:6px;border:2px solid var(--border)" onclick="selectAvatar(this,'👨')">👨</span>
-        <span style="font-size:22px;cursor:pointer;padding:4px;border-radius:6px;border:2px solid var(--border)" onclick="selectAvatar(this,'👩')">👩</span>
-        <span style="font-size:22px;cursor:pointer;padding:4px;border-radius:6px;border:2px solid var(--border)" onclick="selectAvatar(this,'🧑')">🧑</span>
-        <span style="font-size:22px;cursor:pointer;padding:4px;border-radius:6px;border:2px solid var(--border)" onclick="selectAvatar(this,'🏋️')">🏋️</span>
-        <span style="font-size:22px;cursor:pointer;padding:4px;border-radius:6px;border:2px solid var(--border)" onclick="selectAvatar(this,'🧑‍🏫')">🧑‍🏫</span>
-        <span style="font-size:22px;cursor:pointer;padding:4px;border-radius:6px;border:2px solid var(--border)" onclick="selectAvatar(this,'⭐')">⭐</span>
-        <span style="font-size:22px;cursor:pointer;padding:4px;border-radius:6px;border:2px solid var(--border)" onclick="selectAvatar(this,'🔥')">🔥</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Color</label>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px" id="cu-color-picker">
-        <div style="width:28px;height:28px;border-radius:50%;background:#c8f25e;cursor:pointer;border:2px solid transparent" onclick="selectColor(this,'#c8f25e')"></div>
-        <div style="width:28px;height:28px;border-radius:50%;background:#7c6dfa;cursor:pointer;border:2px solid transparent" onclick="selectColor(this,'#7c6dfa')"></div>
-        <div style="width:28px;height:28px;border-radius:50%;background:#ff6b6b;cursor:pointer;border:2px solid transparent" onclick="selectColor(this,'#ff6b6b')"></div>
-        <div style="width:28px;height:28px;border-radius:50%;background:#4ecdc4;cursor:pointer;border:2px solid transparent" onclick="selectColor(this,'#4ecdc4')"></div>
-        <div style="width:28px;height:28px;border-radius:50%;background:#f5a623;cursor:pointer;border:2px solid transparent" onclick="selectColor(this,'#f5a623')"></div>
-        <div style="width:28px;height:28px;border-radius:50%;background:#e91e8c;cursor:pointer;border:2px solid transparent" onclick="selectColor(this,'#e91e8c')"></div>
-      </div>
-    </div>
-    <input type="hidden" id="cu-avatar-val" value="👤">
-    <input type="hidden" id="cu-color-val" value="#c8f25e">
-    <input type="hidden" id="cu-edit-id" value="">
-    <button class="btn btn-accent btn-block" onclick="saveUser()">Guardar</button>
-    <button class="btn-ghost btn-block" style="margin-top:8px;width:100%;text-align:center" onclick="closeModal('modal-create-user')">Cancelar</button>
-  </div>
-</div>
-
-<!-- MODAL: ASSIGN SPLIT TO CLIENTS -->
-<div class="modal-overlay" id="modal-assign-split">
-  <div class="modal-box">
-    <div class="modal-title">Asignar entrenamiento a clientes</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:4px" id="assign-split-name"></div>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Se creará una copia del entrenamiento en el perfil de cada cliente seleccionado.</p>
-    <div id="assign-clients-list" style="margin-bottom:14px;max-height:260px;overflow-y:auto"></div>
-    <button class="btn btn-accent btn-block" onclick="confirmAssignSplit()">Asignar ✓</button>
-    <button class="btn-ghost btn-block" style="margin-top:8px;width:100%;text-align:center" onclick="closeModal('modal-assign-split')">Cancelar</button>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script>
 // ══════════════════════ API HELPERS ══════════════════════
 const api = {
-  async get(path){
-    const r=await fetch(path,{credentials:'include'});
-    if(r.status===401){showProfileScreen();return null;}
-    return r.json();
-  },
-  async post(path,body){
-    const r=await fetch(path,{method:'POST',credentials:'include',
-      headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(r.status===401){showProfileScreen();return null;}
-    return r.json();
-  },
-  async put(path,body){
-    const r=await fetch(path,{method:'PUT',credentials:'include',
-      headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(r.status===401){showProfileScreen();return null;}
-    return r.json();
-  },
-  async del(path){
-    const r=await fetch(path,{method:'DELETE',credentials:'include'});
-    if(r.status===401){showProfileScreen();return null;}
-    return r.json();
-  }
+  async get(path){ const r=await fetch(path); return r.json(); },
+  async post(path,body){ const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); return r.json(); },
+  async put(path,body){ const r=await fetch(path,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); return r.json(); },
+  async del(path){ const r=await fetch(path,{method:'DELETE'}); return r.json(); }
 };
 
 // ══════════════════════ STATE ══════════════════════
-let STATE = { exercises:{}, splits:[], weekPlan:{}, workouts:[], currentUser:null, viewingAs:null };
+let STATE = { exercises:{}, splits:[], weekPlan:{}, workouts:[] };
 let sessionData = null;
 let editSplitId = null;
 let selectedExercises = [];
+let splitType = 'push';
 
-// ── Muscle group helpers ───────────────────────────────
-const MG_EMOJI = {
-  'Pectoral':'💪','Hombros':'🏋️','Tríceps':'💥','Dorsal':'🔙',
-  'Bíceps':'🦾','Trapecio':'🏔️','Cuádriceps':'🦵','Isquiotibiales':'🦵',
-  'Glúteos':'🍑','Pantorrillas':'🦶','Abdomen':'🎯','default':'🏃'
-};
-const MG_COLOR = {
-  'Pectoral':'var(--push)','Hombros':'var(--push)','Tríceps':'var(--push)',
-  'Dorsal':'var(--pull)','Bíceps':'var(--pull)','Trapecio':'var(--pull)',
-  'Cuádriceps':'var(--legs)','Isquiotibiales':'var(--legs)',
-  'Glúteos':'var(--legs)','Pantorrillas':'var(--legs)',
-  'Abdomen':'var(--core)','default':'var(--full)'
-};
-// Backward compat for splits stored with old push/pull/legs types
-const TYPE_LABELS = {push:'Push',pull:'Pull',legs:'Legs',full:'Full Body',core:'Core',upper:'Upper',lower:'Lower'};
-const TYPE_TC    = {push:'tag-push',pull:'tag-pull',legs:'tag-legs',full:'tag-full',core:'tag-core',upper:'tag-pull',lower:'tag-legs'};
-
-function mgColor(mg){ return MG_COLOR[mg]||MG_COLOR['default']; }
-function mgEmoji(mg){ return MG_EMOJI[mg]||'🏋️'; }
-function splitTypeTagHTML(s){
-  if(TYPE_TC[s.type]){
-    return `<span class="tag ${TYPE_TC[s.type]}">${TYPE_LABELS[s.type]||s.type}</span>`;
-  }
-  const groups=(s.type||'').split(',').map(g=>g.trim()).filter(Boolean);
-  if(!groups.length) return '';
-  return groups.map(g=>`<span class="tag" style="background:${mgColor(g)}22;color:${mgColor(g)};border:1px solid ${mgColor(g)}44;font-size:11px">${mgEmoji(g)} ${g}</span>`).join('');
-}
 const DAYS_S = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const DAYS_L = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-
-// ══════════════════════ SPLIT EDITOR ══════════════════════
-let selectedMuscleGroups = new Set();
-
-function renderTypePills(){
-  const container = document.getElementById('type-pills');
-  const groups = Object.keys(STATE.exercises).sort();
-  container.innerHTML = groups.map(mg=>{
-    const sel = selectedMuscleGroups.has(mg);
-    const col = mgColor(mg);
-    const em = mgEmoji(mg);
-    return `<span class="pill${sel?' sel':''}" data-mg="${mg}"
-      style="${sel?`background:${col}22;border-color:${col};color:${col}`:''}"
-      onclick="toggleMuscleGroup(this,'${mg}')">${em} ${mg}</span>`;
-  }).join('');
-}
-
-function toggleMuscleGroup(el, mg){
-  if(selectedMuscleGroups.has(mg)){
-    selectedMuscleGroups.delete(mg);
-    el.classList.remove('sel');
-    el.removeAttribute('style');
-  } else {
-    selectedMuscleGroups.add(mg);
-    el.classList.add('sel');
-    const col=mgColor(mg);
-    el.style.cssText=`background:${col}22;border-color:${col};color:${col}`;
-  }
-  renderEditorPicker();
-}
-
-function openSplitEditor(){
-  editSplitId=null; selectedExercises=[]; selectedMuscleGroups=new Set();
-  document.getElementById('split-name-input').value='';
-  document.getElementById('split-editor-title').textContent='Nuevo entrenamiento';
-  renderTypePills();
-  renderEditorPicker();
-  renderEditorOrder();
-  showView('view-split-editor');
-}
-
-function editSplit(id){
-  const s=STATE.splits.find(x=>x.id===id);
-  editSplitId=id; selectedExercises=[...s.exercises];
-  // Restore selected muscle groups from stored type
-  selectedMuscleGroups=new Set();
-  if(s.type){
-    // New style: "Pectoral,Tríceps" or old style: "push"
-    const parts = s.type.split(',').map(t=>t.trim());
-    parts.forEach(t=>{ if(STATE.exercises[t]) selectedMuscleGroups.add(t); });
-  }
-  document.getElementById('split-name-input').value=s.name;
-  document.getElementById('split-editor-title').textContent='Editar entrenamiento';
-  renderTypePills();
-  renderEditorPicker();
-  renderEditorOrder();
-  showView('view-split-editor');
-}
-
-function renderEditorPicker(){
-  const groups = selectedMuscleGroups.size > 0
-    ? [...selectedMuscleGroups]
-    : Object.keys(STATE.exercises).sort(); // show all if none selected
-
-  const entries = groups
-    .filter(mg => STATE.exercises[mg])
-    .map(mg => [mg, STATE.exercises[mg]]);
-
-  if(!entries.length){
-    document.getElementById('editor-ex-picker').innerHTML=
-      `<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">Selecciona un grupo muscular arriba</div>`;
-    return;
-  }
-
-  document.getElementById('editor-ex-picker').innerHTML = entries.map(([mg,exs])=>`
-    <div style="margin-bottom:14px">
-      <div style="font-size:11px;font-weight:700;color:${mgColor(mg)};margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">${mgEmoji(mg)} ${mg}</div>
-      <div>${exs.map(ex=>{
-        const sel=selectedExercises.some(e=>e.name===ex.name);
-        return`<span class="pill${sel?' sel':''}" onclick="toggleEx(this,'${ex.name.replace(/'/g,"\\'")}','${mg}')">${ex.name}</span>`;
-      }).join('')}</div>
-    </div>`).join('');
-}
+const TYPE_LABELS = {push:'Push',pull:'Pull',legs:'Legs',full:'Full Body',core:'Core',upper:'Upper',lower:'Lower'};
+const TYPE_TC = {push:'tag-push',pull:'tag-pull',legs:'tag-legs',full:'tag-full',core:'tag-core',upper:'tag-pull',lower:'tag-legs'};
 
 const now = new Date();
 const todayDow = now.getDay();
@@ -733,224 +319,14 @@ const todayStr = now.toLocaleDateString('es-CR');
 
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
 
-// ══════════════════════ PROFILES & AUTH ══════════════════════
-function activeUid(){ return STATE.viewingAs ? STATE.viewingAs.id : STATE.currentUser?.id; }
-function uidParam(){ const u=activeUid(); return u?`?user_id=${u}`:''; }
-
-// Show profile picker screen
-async function showProfileScreen(){
-  document.getElementById('profile-screen').classList.remove('hidden');
-  const users = await fetch('/api/users').then(r=>r.json());
-  const grid = document.getElementById('profile-grid');
-  const roleOrder = {admin:0, profesor:1, cliente:2};
-  users.sort((a,b)=>(roleOrder[a.role]||2)-(roleOrder[b.role]||2));
-  grid.innerHTML = users.map(u=>`
-    <div class="profile-card" onclick="selectProfile('${u.id}',${u.has_pin})"
-         style="border-color:${u.has_pin?'var(--border)':u.color+'44'}">
-      ${u.has_pin?'<div class="profile-pin-dot" title="Requiere PIN"></div>':''}
-      <div class="profile-avatar">${u.avatar}</div>
-      <div class="profile-name" style="color:${u.color}">${u.name}</div>
-      <div class="profile-role">${{admin:'Admin',profesor:'Profesor',cliente:'Cliente'}[u.role]||u.role}</div>
-    </div>`).join('');
-}
-
-let pinTarget=null;
-let pinBuffer='';
-function selectProfile(uid, hasPin){
-  pinTarget=uid; pinBuffer='';
-  if(hasPin){ openPinEntry(); }
-  else { doLogin(uid,''); }
-}
-function openPinEntry(){
-  document.getElementById('pin-overlay').classList.remove('hidden');
-  document.getElementById('pin-error').textContent='';
-  updatePinDots();
-}
-function updatePinDots(){
-  for(let i=0;i<4;i++){
-    const d=document.getElementById('pd'+i);
-    if(d) d.classList.toggle('filled',i<pinBuffer.length);
-  }
-}
-function pinKey(k){
-  if(pinBuffer.length>=4) return;
-  pinBuffer+=k; updatePinDots();
-  if(pinBuffer.length===4) setTimeout(()=>doLogin(pinTarget,pinBuffer),150);
-}
-function pinDel(){ if(pinBuffer.length>0){ pinBuffer=pinBuffer.slice(0,-1); updatePinDots(); } }
-function pinCancel(){ document.getElementById('pin-overlay').classList.add('hidden'); pinBuffer=''; }
-
-async function doLogin(uid, pin){
-  const res = await fetch('/api/auth/login',{
-    method:'POST',
-    credentials:'include',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({user_id:uid, pin})
-  }).then(r=>r.json()).catch(()=>({error:'Error de red'}));
-  if(res.error){
-    document.getElementById('pin-error').textContent=res.error;
-    pinBuffer=''; updatePinDots(); return;
-  }
-  document.getElementById('pin-overlay').classList.add('hidden');
-  document.getElementById('profile-screen').classList.add('hidden');
-  STATE.currentUser=res.user;
-  STATE.viewingAs=null;
-  updateUserBar();
-  await loadAll();
-}
-
-async function doLogout(){
-  await api.post('/api/auth/logout',{});
-  STATE.currentUser=null; STATE.viewingAs=null;
-  closeModal('modal-user-menu');
-  showProfileScreen();
-}
-
-function updateUserBar(){
-  const u = STATE.viewingAs || STATE.currentUser;
-  if(!u) return;
-  document.getElementById('ub-avatar').textContent=u.avatar||'👤';
-  document.getElementById('ub-name').textContent=u.name;
-  document.getElementById('ub-role').textContent={admin:'Admin',profesor:'Profesor',cliente:'Cliente'}[u.role]||'';
-  // Viewing-as banner
-  const banner=document.getElementById('viewing-banner');
-  if(STATE.viewingAs){
-    document.getElementById('viewing-banner-avatar').textContent=STATE.viewingAs.avatar;
-    document.getElementById('viewing-banner-text').textContent='Viendo como: '+STATE.viewingAs.name;
-    banner.classList.remove('hidden');
-  } else {
-    banner.classList.add('hidden');
-  }
-}
-
-async function showUserMenu(){
-  const u=STATE.currentUser; if(!u) return;
-  document.getElementById('umenu-avatar').textContent=u.avatar;
-  document.getElementById('umenu-name').textContent=u.name;
-  const roleLabels={admin:'Admin',profesor:'Profesor',cliente:'Cliente'};
-  const roleColors={admin:'role-admin',profesor:'role-profesor',cliente:'role-cliente'};
-  document.getElementById('umenu-role-badge').innerHTML=`<span class="role-badge ${roleColors[u.role]||''}">${roleLabels[u.role]||u.role}</span>`;
-  const sec=document.getElementById('umenu-clients-section');
-  if(u.role==='admin'||u.role==='profesor'){
-    sec.style.display='';
-    const clients=await api.get('/api/my_clients');
-    if(!clients){return;}
-    document.getElementById('umenu-clients').innerHTML=clients.map(c=>`
-      <div class="card" style="display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:6px;cursor:pointer" onclick="viewAs('${c.id}','${c.name}','${c.avatar}','${c.role}')">
-        <span style="font-size:20px">${c.avatar}</span>
-        <div style="flex:1"><div style="font-size:13px;font-weight:500">${c.name}</div>
-          <div style="font-size:11px;color:var(--muted)">${roleLabels[c.role]||c.role}</div></div>
-        <span style="font-size:11px;color:var(--muted)">Ver →</span>
-      </div>`).join('')||'<div style="font-size:12px;color:var(--muted);padding:4px 0">Sin usuarios asignados</div>';
-  } else { sec.style.display='none'; }
-  document.getElementById('modal-user-menu').classList.add('open');
-}
-
-async function viewAs(uid,name,avatar,role){
-  STATE.viewingAs={id:uid,name,avatar,role};
-  closeModal('modal-user-menu');
-  updateUserBar();
-  await loadAll();
-  toast('Viendo como '+name);
-}
-
-function stopViewingAs(){
-  STATE.viewingAs=null;
-  updateUserBar();
-  loadAll();
-}
-
-// ── Users management view ──────────────────────────────
-async function renderUsersView(){
-  const content=document.getElementById('users-list-content');
-  content.innerHTML='<div class="loading">Cargando…</div>';
-  const users=await api.get('/api/my_clients');
-  if(!users){return;}
-  const roleLabels={admin:'Admin',profesor:'Profesor',cliente:'Cliente'};
-  const roleColors={admin:'role-admin',profesor:'role-profesor',cliente:'role-cliente'};
-  if(!users.length){
-    content.innerHTML='<div class="empty-state"><div class="empty-icon">👥</div><p>Sin usuarios aún. Crea uno.</p></div>';return;
-  }
-  content.innerHTML=users.map(u=>`
-    <div class="card" style="display:flex;align-items:center;gap:12px">
-      <div style="font-size:28px">${u.avatar}</div>
-      <div style="flex:1">
-        <div style="font-size:14px;font-weight:600">${u.name}</div>
-        <span class="role-badge ${roleColors[u.role]||''}" style="margin-top:3px">${roleLabels[u.role]||u.role}</span>
-      </div>
-      <button class="btn-icon" onclick="openEditUser('${u.id}','${u.name}','${u.role}','${u.avatar}')">✎</button>
-      <button class="btn-icon" style="color:var(--accent3);border-color:rgba(255,107,107,.3)" onclick="deleteUserBtn('${u.id}','${u.name}')">×</button>
-    </div>`).join('');
-}
-
-async function deleteUserBtn(uid,name){
-  if(!confirm('¿Eliminar usuario '+name+'?')) return;
-  await api.del('/api/users/'+uid);
-  toast('Usuario eliminado');
-  renderUsersView();
-}
-
-// Create/edit user modal
-let cuSelectedAvatar='👤', cuSelectedColor='#c8f25e';
-function openCreateUser(){
-  cuSelectedAvatar='👤'; cuSelectedColor='#c8f25e';
-  document.getElementById('create-user-title').textContent='Nuevo usuario';
-  document.getElementById('cu-name').value='';
-  document.getElementById('cu-pin').value='';
-  document.getElementById('cu-edit-id').value='';
-  document.getElementById('cu-avatar-val').value='👤';
-  document.getElementById('cu-color-val').value='#c8f25e';
-  const roleGrp=document.getElementById('cu-role-group');
-  roleGrp.style.display=STATE.currentUser?.role==='profesor'?'none':'';
-  document.querySelectorAll('#cu-avatar-picker span').forEach(el=>el.style.borderColor='var(--border)');
-  document.querySelectorAll('#cu-color-picker div').forEach(el=>el.style.borderColor='transparent');
-  document.getElementById('modal-create-user').classList.add('open');
-}
-function openEditUser(uid,name,role,avatar){
-  openCreateUser();
-  document.getElementById('create-user-title').textContent='Editar usuario';
-  document.getElementById('cu-name').value=name;
-  document.getElementById('cu-edit-id').value=uid;
-  document.getElementById('cu-role').value=role;
-}
-function selectAvatar(el,val){
-  document.querySelectorAll('#cu-avatar-picker span').forEach(e=>e.style.borderColor='var(--border)');
-  el.style.borderColor='var(--accent)';
-  document.getElementById('cu-avatar-val').value=val;
-}
-function selectColor(el,val){
-  document.querySelectorAll('#cu-color-picker div').forEach(e=>e.style.borderColor='transparent');
-  el.style.borderColor='var(--accent)';
-  document.getElementById('cu-color-val').value=val;
-}
-async function saveUser(){
-  const name=document.getElementById('cu-name').value.trim();
-  if(!name){alert('Escribe un nombre');return;}
-  const uid=document.getElementById('cu-edit-id').value;
-  const body={
-    name, role:document.getElementById('cu-role').value,
-    pin:document.getElementById('cu-pin').value||null,
-    avatar:document.getElementById('cu-avatar-val').value,
-    color:document.getElementById('cu-color-val').value
-  };
-  if(uid){ await api.put('/api/users/'+uid, body); }
-  else { await api.post('/api/users', body); }
-  closeModal('modal-create-user');
-  toast('Usuario guardado ✓');
-  renderUsersView();
-}
-
 // ══════════════════════ LOAD ALL ══════════════════════
 async function loadAll(){
-  const uid=activeUid();
-  const q=uid?`?user_id=${uid}`:'';
   const [exercises, splits, weekPlan, workouts] = await Promise.all([
-    api.get('/api/exercises'+q),
-    api.get('/api/splits'+q),
-    api.get('/api/week_plan'+q),
-    api.get('/api/workouts'+q)
+    api.get('/api/exercises'),
+    api.get('/api/splits'),
+    api.get('/api/week_plan'),
+    api.get('/api/workouts')
   ]);
-  if(!exercises) return; // 401 — profile screen shown
   STATE.exercises = exercises;
   STATE.splits = splits;
   STATE.weekPlan = weekPlan;
@@ -970,7 +346,6 @@ function navTo(id, btn){
   if(id==='view-history') renderHistoryView();
   if(id==='view-progress') renderProgressView();
   if(id==='view-home') renderHomeView();
-  if(id==='view-users') renderUsersView();
 }
 function showView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -990,7 +365,7 @@ function renderHomeView(){
     let cls='week-day'+(isToday?' today':'')+(logged?' logged':'');
     return`<div class="${cls}">
       <div class="wd-name">${d}</div>
-      <div class="wd-split" style="font-size:9px;margin-top:3px;color:${sp?mgColor((sp.type||'').split(',')[0].trim()||sp.type):'var(--muted)'}">${sid==='rest'?'😴':sp?sp.name.substring(0,5):'—'}</div>
+      <div class="wd-split ${sp?TYPE_TC[sp.type]||'tag-full':''}" style="font-size:9px;margin-top:3px">${sid==='rest'?'😴':sp?sp.name.substring(0,5):'—'}</div>
       <div class="wd-dot"></div>
     </div>`;
   }).join('');
@@ -1005,8 +380,8 @@ function renderHomeView(){
     return;
   }
   if(!sp){
-    tb.innerHTML=`<div class="card" style="text-align:center;padding:24px"><div style="font-size:13px;color:var(--muted)">Sin entrenamiento asignado para hoy.</div>
-    <button class="btn btn-outline" style="margin-top:12px;font-size:13px" onclick="navTo('view-splits',document.querySelectorAll('.nav-btn')[1])">Configurar entrenamientos →</button></div>`;
+    tb.innerHTML=`<div class="card" style="text-align:center;padding:24px"><div style="font-size:13px;color:var(--muted)">Sin split asignado para hoy.</div>
+    <button class="btn btn-outline" style="margin-top:12px;font-size:13px" onclick="navTo('view-splits',document.querySelectorAll('.nav-btn')[1])">Configurar splits →</button></div>`;
     return;
   }
   const muscles=[...new Set(sp.exercises.map(e=>e.muscle))];
@@ -1015,7 +390,7 @@ function renderHomeView(){
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
         <div><div style="font-size:17px;font-weight:700">${sp.name}</div>
-          <div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:3px">${splitTypeTagHTML(sp)}</div></div>
+          <span class="tag ${TYPE_TC[sp.type]||'tag-full'}" style="margin-top:4px">${TYPE_LABELS[sp.type]||sp.type}</span></div>
         ${existing?`<span style="font-size:11px;background:rgba(200,242,94,.1);color:var(--accent);padding:3px 10px;border-radius:20px;border:1px solid rgba(200,242,94,.3)">✓ Registrado</span>`:''}
       </div>
       <div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">Músculos</div>
@@ -1036,114 +411,52 @@ function renderHomeView(){
 // ══════════════════════ SPLITS VIEW ══════════════════════
 function renderSplitsView(){
   const sl = document.getElementById('splits-list');
-  const u = STATE.currentUser;
-  const canManage = u && (u.role==='admin' || u.role==='profesor');
-
   if(!STATE.splits.length){
-    sl.innerHTML=`<div class="empty-state"><div class="empty-icon">🗂️</div><p>Sin entrenamientos. Crea uno.</p></div>`;
+    sl.innerHTML=`<div class="empty-state"><div class="empty-icon">🗂️</div><p>Sin splits. Crea uno.</p></div>`;
   } else {
-    sl.innerHTML=STATE.splits.map(s=>{
-      const ownerBadge = s.owner_id
-        ? `<span style="font-size:10px;color:var(--accent2);background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);padding:1px 7px;border-radius:10px;margin-left:4px">${s.owner_avatar||'🧑‍🏫'} ${s.owner_name||'Trainer'}</span>`
-        : '';
-      return`<div class="card" style="display:flex;align-items:center;gap:10px">
+    sl.innerHTML=STATE.splits.map(s=>`
+      <div class="card" style="display:flex;align-items:center;gap:10px">
         <div style="flex:1">
-          <div style="font-size:14px;font-weight:600;display:flex;align-items:center;flex-wrap:wrap;gap:4px">${s.name}${ownerBadge}</div>
-          <div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:3px;align-items:center">${splitTypeTagHTML(s)}
-          <span style="font-size:11px;color:var(--muted);margin-left:2px">${s.exercises.length} ejercicios</span></div>
+          <div style="font-size:14px;font-weight:600">${s.name}</div>
+          <div style="margin-top:4px"><span class="tag ${TYPE_TC[s.type]||'tag-full'}">${TYPE_LABELS[s.type]||s.type}</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:4px">${s.exercises.length} ejercicios</span></div>
         </div>
-        ${canManage?`<button class="btn-icon" title="Asignar a clientes" onclick="openAssignSplit('${s.id}','${s.name.replace(/'/g,"\\'")}')">👥</button>`:''}
         <button class="btn-icon" onclick="editSplit('${s.id}')">✎</button>
         <button class="btn-icon" style="color:var(--accent3);border-color:rgba(255,107,107,.3)" onclick="deleteSplitBtn('${s.id}')">×</button>
-      </div>`;
-    }).join('');
+      </div>`).join('');
   }
 
-  // If admin/profesor is viewing a client, show only that client's splits for week-assign
   const wa = document.getElementById('week-assign');
-  const opts = `<option value="">Sin asignar</option><option value="rest">😴 Descanso</option>`+
-    STATE.splits.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
-  wa.innerHTML = DAYS_L.map((d,i)=>`
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+  wa.innerHTML = DAYS_L.map((d,i)=>{
+    const cur = STATE.weekPlan[i]||'';
+    const dayOpts = `<option value=""${cur===''?' selected':''}>Sin asignar</option>`+
+      `<option value="rest"${cur==='rest'?' selected':''}>😴 Descanso</option>`+
+      STATE.splits.map(s=>`<option value="${s.id}"${cur===s.id?' selected':''}>${s.name}</option>`).join('');
+    return`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
       <span style="font-size:13px;color:${i===todayDow?'var(--accent)':'var(--muted)'};font-weight:${i===todayDow?600:400};min-width:88px">${d}</span>
-      <select class="form-input" style="flex:1;padding:7px 10px" onchange="assignDay(${i},this.value)">
-        ${opts.replace(`value="${STATE.weekPlan[i]||''}"`,`value="${STATE.weekPlan[i]||''}" selected`)}
-      </select>
-    </div>`).join('');
-
-  // Context banner when viewing a client
-  const banner = document.getElementById('splits-context-banner');
-  const listLabel = document.getElementById('splits-list-label');
-  const assignLabel = document.getElementById('week-assign-label');
-  if(STATE.viewingAs){
-    banner.style.display='';
-    banner.innerHTML=`🧑‍🏫 Gestionando entrenamientos de <strong>${STATE.viewingAs.name}</strong> — los cambios afectan su perfil`;
-    listLabel.textContent='Entrenamientos de '+STATE.viewingAs.name;
-    assignLabel.textContent='Semana de '+STATE.viewingAs.name;
-  } else {
-    banner.style.display='none';
-    listLabel.textContent='Mis entrenamientos';
-    assignLabel.textContent='Asignar días de la semana';
-  }
+      <select class="form-input" style="flex:1;padding:7px 10px" onchange="assignDay(${i},this.value)">${dayOpts}</select>
+    </div>`;
+  }).join('');
 }
 
 async function assignDay(dow, val){
-  const uid=activeUid();
-  await api.put(`/api/week_plan/${dow}`, {split_id: val||null, user_id: uid});
+  await api.put(`/api/week_plan/${dow}`, {split_id: val||null});
   STATE.weekPlan[dow] = val||null;
   renderHomeView();
 }
 async function deleteSplitBtn(id){
-  if(!confirm('¿Eliminar entrenamiento?')) return;
+  if(!confirm('¿Eliminar split?')) return;
   await api.del(`/api/splits/${id}`);
   STATE.splits = STATE.splits.filter(s=>s.id!==id);
   Object.keys(STATE.weekPlan).forEach(k=>{if(STATE.weekPlan[k]===id) STATE.weekPlan[k]=null;});
-  renderSplitsView(); renderHomeView(); toast('Entrenamiento eliminado');
+  renderSplitsView(); renderHomeView(); toast('Split eliminado');
 }
 
-// ══════════════════════ ASSIGN SPLIT ══════════════════════
-let assignSplitId = null;
-
-async function openAssignSplit(splitId, splitName){
-  assignSplitId = splitId;
-  document.getElementById('assign-split-name').textContent = '📋 ' + splitName;
-
-  const clients = await api.get('/api/assignable_clients');
-  if(!clients) return;
-
-  const list = document.getElementById('assign-clients-list');
-  if(!clients.length){
-    list.innerHTML='<div style="text-align:center;color:var(--muted);font-size:13px;padding:16px">Sin clientes disponibles</div>';
-  } else {
-    const roleLabels={admin:'Admin',profesor:'Profesor',cliente:'Cliente'};
-    list.innerHTML = clients.map(c=>`
-      <label style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:4px;border:1px solid var(--border);background:var(--surface2);transition:all .15s"
-             onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="this.style.borderColor='var(--border)'">
-        <input type="checkbox" value="${c.id}" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer">
-        <span style="font-size:20px">${c.avatar}</span>
-        <div style="flex:1">
-          <div style="font-size:13px;font-weight:600">${c.name}</div>
-          <div style="font-size:11px;color:var(--muted)">${roleLabels[c.role]||c.role}</div>
-        </div>
-      </label>`).join('');
-  }
-  document.getElementById('modal-assign-split').classList.add('open');
-}
-
-async function confirmAssignSplit(){
-  const checked = [...document.querySelectorAll('#assign-clients-list input[type=checkbox]:checked')];
-  if(!checked.length){ toast('Selecciona al menos un cliente'); return; }
-  const userIds = checked.map(c=>c.value);
-  await api.post(`/api/splits/${assignSplitId}/assign`, {user_ids: userIds});
-  closeModal('modal-assign-split');
-  toast(`Entrenamiento asignado a ${userIds.length} perfil${userIds.length>1?'es':''} ✓`);
-}
-
-
+// ══════════════════════ SPLIT EDITOR ══════════════════════
 function openSplitEditor(){
   editSplitId=null; selectedExercises=[]; splitType='push';
   document.getElementById('split-name-input').value='';
-  document.getElementById('split-editor-title').textContent='Nuevo entrenamiento';
+  document.getElementById('split-editor-title').textContent='Nuevo split';
   document.querySelectorAll('#type-pills .pill').forEach(p=>p.classList.toggle('sel',p.dataset.type==='push'));
   renderEditorPicker(); renderEditorOrder();
   showView('view-split-editor');
@@ -1152,12 +465,25 @@ function editSplit(id){
   const s=STATE.splits.find(x=>x.id===id);
   editSplitId=id; selectedExercises=[...s.exercises]; splitType=s.type;
   document.getElementById('split-name-input').value=s.name;
-  document.getElementById('split-editor-title').textContent='Editar entrenamiento';
+  document.getElementById('split-editor-title').textContent='Editar split';
   document.querySelectorAll('#type-pills .pill').forEach(p=>p.classList.toggle('sel',p.dataset.type===s.type));
   renderEditorPicker(); renderEditorOrder();
   showView('view-split-editor');
 }
-// Grupos musculares por tipo de split
+function selType(el){
+  document.querySelectorAll('#type-pills .pill').forEach(p=>p.classList.remove('sel'));
+  el.classList.add('sel'); splitType=el.dataset.type;
+}
+function renderEditorPicker(){
+  document.getElementById('editor-ex-picker').innerHTML=Object.entries(STATE.exercises).map(([mg,exs])=>`
+    <div style="margin-bottom:14px">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">${mg}</div>
+      <div>${exs.map(ex=>{
+        const sel=selectedExercises.some(e=>e.name===ex.name);
+        return`<span class="pill${sel?' sel':''}" onclick="toggleEx(this,'${ex.name.replace(/'/g,"\\'")}','${mg}')">${ex.name}</span>`;
+      }).join('')}</div>
+    </div>`).join('');
+}
 function toggleEx(el, name, muscle){
   const idx=selectedExercises.findIndex(e=>e.name===name);
   if(idx>=0){ selectedExercises.splice(idx,1); el.classList.remove('sel'); }
@@ -1185,14 +511,13 @@ function moveDown(i){ if(i===selectedExercises.length-1) return; [selectedExerci
 
 async function saveSplit(){
   const name=document.getElementById('split-name-input').value.trim();
-  if(!name){ alert('Ponle nombre al entrenamiento'); return; }
-  if(!selectedExercises.length){ alert('Agrega al menos un ejercicio'); return; }
-  const type=[...selectedMuscleGroups].join(',')||'full';
-  const split={id: editSplitId||('s'+Date.now()), name, type, exercises:selectedExercises, user_id: activeUid()};
+  if(!name){ alert('Ponle nombre al split'); return; }
+  if(!selectedExercises.length){ alert('Agrega al least un ejercicio'); return; }
+  const split={id: editSplitId||('s'+Date.now()), name, type:splitType, exercises:selectedExercises};
   await api.post('/api/splits', split);
   const idx=STATE.splits.findIndex(s=>s.id===split.id);
   if(idx>=0) STATE.splits[idx]=split; else STATE.splits.push(split);
-  toast('Entrenamiento guardado ✓');
+  toast('Split guardado ✓');
   goBack('view-splits');
   renderHomeView();
 }
@@ -1269,19 +594,6 @@ function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 // ══════════════════════ SESSION ══════════════════════
 let sessionClockInterval=null, sessionClockStart=0;
 
-function getLastSetsForExercise(name){
-  // Find the most recent workout (excluding today) that has completed sets for this exercise
-  const past=STATE.workouts.filter(w=>w.date!==todayStr && w.exercises.some(e=>e.name===name));
-  if(!past.length) return null;
-  // workouts are ordered desc by date, so first match is most recent
-  const lastW=past[0];
-  const lastEx=lastW.exercises.find(e=>e.name===name);
-  const doneSets=lastEx.sets.filter(s=>s.done);
-  if(!doneSets.length) return null;
-  // Return sets as fresh (not done, no rest time, same kg/reps/rir)
-  return doneSets.map(s=>({kg:s.kg, reps:s.reps, rir:s.rir, done:false}));
-}
-
 async function startSession(splitId){
   const sp=STATE.splits.find(s=>s.id===splitId);
   const existing=STATE.workouts.find(w=>w.date===todayStr && w.splitId===splitId);
@@ -1289,12 +601,7 @@ async function startSession(splitId){
   else {
     sessionData={id:'w'+Date.now(),date:todayStr,dow:todayDow,splitId,splitName:sp.name,
       splitType:sp.type,startTime:Date.now(),
-      exercises:sp.exercises.map(e=>{
-        const lastSets=getLastSetsForExercise(e.name);
-        return {name:e.name, muscle:e.muscle,
-          sets: lastSets || [{kg:'',reps:'',rir:'2',done:false}],
-          _fromHistory: !!lastSets};
-      })};
+      exercises:sp.exercises.map(e=>({name:e.name,muscle:e.muscle,sets:[{kg:'',reps:'',rir:'2',done:false}]}))};
   }
   document.getElementById('session-title').textContent=sp.name;
   renderSession();
@@ -1324,11 +631,12 @@ function renderSession(){
         <div style="flex:1"><div style="font-size:14px;font-weight:500">${ex.name}${histBadge}</div>
           <div style="font-size:11px;color:var(--muted)">${ex.muscle}</div></div>
         <div class="ex-vol" id="exvol-${ei}">${vol>0?vol.toLocaleString()+' kg':''}</div>
+        <button class="btn-ghost" style="font-size:11px;padding:2px 8px;margin-left:4px;border:1px solid var(--border);border-radius:6px;color:var(--muted)" onclick="event.stopPropagation();openSwapExercise(${ei})" title="Cambiar ejercicio">⇄</button>
         <span style="color:var(--muted);margin-left:6px;font-size:12px">▾</span>
       </div>
       <div class="ex-card-body${ei===0?' open':''}" id="exb-${ei}">
         <table class="sets-table">
-          <thead><tr><th></th><th>Kg</th><th>Reps</th><th>RIR</th><th>⏱</th><th>✓</th></tr></thead>
+          <thead><tr><th></th><th>Kg</th><th>Reps</th><th>RIR</th><th>✓</th></tr></thead>
           <tbody id="stb-${ei}">${renderSetsHTML(ex.sets,ei)}</tbody>
         </table>
         <div style="display:flex;gap:8px;margin-top:8px">
@@ -1341,41 +649,23 @@ function renderSession(){
 }
 
 function renderSetsHTML(sets,ei){
-  return sets.map((s,si)=>{
-    const restSecs = s.restSecs||0;
-    const restStr = restSecs>0 ? (restSecs>=60?`${Math.floor(restSecs/60)}m${restSecs%60>0?(restSecs%60)+'s':''}` : `${restSecs}s`) : '—';
-    const restCls = restSecs>0?(restSecs<=150?'good':'long'):'';
-    return`<tr class="${s.done?'completed':''}" id="sr-${ei}-${si}">
+  return sets.map((s,si)=>`
+    <tr class="${s.done?'completed':''}" id="sr-${ei}-${si}">
       <td class="set-num">${si+1}</td>
       <td><input class="set-inp" type="number" min="0" step="0.5" value="${s.kg}" placeholder="kg" style="width:52px" onchange="updateSet(${ei},${si},'kg',this.value)"></td>
       <td><input class="set-inp" type="number" min="1" value="${s.reps}" placeholder="0" style="width:46px" onchange="updateSet(${ei},${si},'reps',this.value)"></td>
       <td><input class="set-inp" type="number" min="0" max="5" value="${s.rir}" style="width:40px" onchange="updateSet(${ei},${si},'rir',this.value)"></td>
-      <td style="min-width:34px"><span class="rest-badge ${restCls}">${restStr}</span></td>
       <td><button class="set-done${s.done?' active':''}" onclick="toggleSetDone(${ei},${si})">✓</button></td>
-    </tr>`;
-  }).join('');
+    </tr>`).join('');
 }
 function toggleExCard(ei){ document.getElementById('exb-'+ei).classList.toggle('open'); }
 function updateSet(ei,si,field,val){ sessionData.exercises[ei].sets[si][field]=val; updateVolDisplay(ei); autoSave(); }
 function toggleSetDone(ei,si){
-  const wasResting = tRunning;
-  const restSecs = tRunning ? (tSecs - tRemaining) : 0;
   sessionData.exercises[ei].sets[si].done=!sessionData.exercises[ei].sets[si].done;
-  // If completing (done=true) and timer was running, record the elapsed rest for previous set
-  if(sessionData.exercises[ei].sets[si].done && si>0 && restSecs>0){
-    sessionData.exercises[ei].sets[si].restSecs = restSecs;
-  }
-  // If completing, stamp doneTick for measuring next rest
-  if(sessionData.exercises[ei].sets[si].done){
-    sessionData.exercises[ei].sets[si].doneTick = Date.now();
-  }
   const row=document.getElementById(`sr-${ei}-${si}`);
   if(row) row.className=sessionData.exercises[ei].sets[si].done?'completed':'';
   const btn=row?row.querySelector('.set-done'):null;
   if(btn) btn.className='set-done'+(sessionData.exercises[ei].sets[si].done?' active':'');
-  // Re-render the row to show rest badge
-  const tb=document.getElementById('stb-'+ei);
-  if(tb) tb.innerHTML=renderSetsHTML(sessionData.exercises[ei].sets,ei);
   updateVolDisplay(ei); autoSave();
   if(sessionData.exercises[ei].sets[si].done) startRestTimer();
 }
@@ -1391,8 +681,7 @@ function updateVolDisplay(ei){ const v=calcVol(sessionData.exercises[ei]); const
 
 async function autoSave(){
   if(!sessionData) return;
-  const payload={...sessionData, user_id: activeUid()};
-  await api.post('/api/workouts', payload);
+  await api.post('/api/workouts', sessionData);
   const idx=STATE.workouts.findIndex(w=>w.id===sessionData.id);
   if(idx>=0) STATE.workouts[idx]=sessionData; else STATE.workouts.unshift(sessionData);
 }
@@ -1417,44 +706,6 @@ async function confirmEndSession(){
 
 // ══════════════════════ REST TIMER ══════════════════════
 let tSecs=90, tRunning=false, tInterval=null, tRemaining=90;
-let tAlarmEnabled=true;
-let tRestStartTick=0; // when current rest started
-
-// Web Audio alarm
-function playAlarm(){
-  if(!tAlarmEnabled) return;
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const beep=(freq,start,dur)=>{
-      const o=ctx.createOscillator(), g=ctx.createGain();
-      o.connect(g); g.connect(ctx.destination);
-      o.type='sine'; o.frequency.value=freq;
-      g.gain.setValueAtTime(0,ctx.currentTime+start);
-      g.gain.linearRampToValueAtTime(0.4,ctx.currentTime+start+0.02);
-      g.gain.linearRampToValueAtTime(0,ctx.currentTime+start+dur);
-      o.start(ctx.currentTime+start); o.stop(ctx.currentTime+start+dur+0.05);
-    };
-    beep(880,0,0.12); beep(1100,0.16,0.12); beep(1320,0.32,0.22);
-    // Ring the fab icon
-    const fab=document.getElementById('timer-fab');
-    if(fab){fab.classList.add('alarm-ringing'); setTimeout(()=>fab.classList.remove('alarm-ringing'),1600);}
-  }catch(e){}
-}
-
-function toggleAlarm(){
-  tAlarmEnabled=!tAlarmEnabled;
-  document.getElementById('alarm-icon').textContent=tAlarmEnabled?'🔔':'🔕';
-  document.getElementById('alarm-label').textContent=tAlarmEnabled?'Alarma activa':'Alarma inactiva';
-  document.getElementById('alarm-toggle-btn').textContent=tAlarmEnabled?'Desactivar':'Activar';
-}
-
-function setTimerManual(){
-  const m=parseInt(document.getElementById('timer-manual-min').value)||0;
-  const s=parseInt(document.getElementById('timer-manual-sec').value)||0;
-  const total=m*60+s;
-  if(total>0){ setTimer(total); }
-}
-
 function toggleTimerPanel(){ document.getElementById('timer-panel').classList.toggle('open'); }
 function setTimer(s){ tRemaining=s; tSecs=s; updateTimerDisplay(); }
 function updateTimerDisplay(){
@@ -1469,7 +720,6 @@ function startStopTimer(){ tRunning?stopTimer():startTimer(); }
 function startTimer(){
   if(tRemaining<=0) tRemaining=tSecs;
   tRunning=true;
-  tRestStartTick=Date.now()-(tSecs-tRemaining)*1000;
   const btn=document.getElementById('timer-btn'); if(btn) btn.textContent='⏸ Pausar';
   document.getElementById('timer-fab').classList.add('running');
   updateTimerDisplay();
@@ -1480,7 +730,6 @@ function startTimer(){
       clearInterval(tInterval); tRunning=false;
       const b=document.getElementById('timer-btn'); if(b) b.textContent='▶ Iniciar';
       document.getElementById('timer-fab').classList.remove('running');
-      playAlarm();
     }
   },1000);
 }
@@ -1493,279 +742,39 @@ function resetTimer(){ stopTimer(); tRemaining=tSecs; updateTimerDisplay(); }
 function startRestTimer(){ resetTimer(); startTimer(); document.getElementById('timer-panel').classList.add('open'); }
 
 // ══════════════════════ HISTORY ══════════════════════
-
 function renderHistoryView(){
-  const empty=document.getElementById('hist-empty');
+  const hc=document.getElementById('history-content');
   if(!STATE.workouts.length){
-    empty.style.display='block';
-    ['acc-week','acc-month','acc-range','acc-exercise'].forEach(id=>{
-      const el=document.getElementById(id); if(el) el.style.display='none';
-    });
-    return;
+    hc.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><p>Sin entrenamientos aún.</p></div>`; return;
   }
-  empty.style.display='none';
-  ['acc-week','acc-month','acc-range','acc-exercise'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.style.display='';
-  });
-  populateHistExSelect();
-  // Set default date range
-  const today=new Date();
-  const ago30=new Date(today); ago30.setDate(ago30.getDate()-30);
-  const fi=document.getElementById('hist-range-from');
-  const ti=document.getElementById('hist-range-to');
-  if(fi&&!fi.value) fi.value=ago30.toISOString().split('T')[0];
-  if(ti&&!ti.value) ti.value=today.toISOString().split('T')[0];
-}
-
-// ─── helpers ───────────────────────────────────────────
-function parseDateCR(str){
-  if(!str) return null;
-  const p=str.split('/');
-  if(p.length===3) return new Date(+p[2],+p[1]-1,+p[0]);
-  return new Date(str);
-}
-function fmtShort(str){
-  const p=str.split('/');
-  return p.length===3?p[0]+'/'+p[1]:str;
-}
-
-// Build mini SVG sparkline chart for one exercise across multiple dates
-// entries: [{date, maxKg, vol}]
-function miniExChart(entries, color){
-  if(!entries||entries.length<1) return '';
-  const W=300, H=52, padL=28, padR=6, padT=8, padB=18;
-  const innerW=W-padL-padR, innerH=H-padT-padB;
-  const n=entries.length;
-  const mxK=Math.max(...entries.map(e=>e.maxKg),1);
-  const xStep=n>1?innerW/(n-1):0;
-  const pts=entries.map((e,i)=>({
-    x:padL+(n>1?i*xStep:innerW/2),
-    y:padT+innerH-(e.maxKg/mxK)*innerH
-  }));
-  const bw=Math.max(5,Math.min(18,n>1?xStep*0.45:innerW*0.2));
-  const bars=entries.map((e,i)=>{
-    const bh=Math.max(2,(e.maxKg/mxK)*innerH);
-    return '<rect x="'+(pts[i].x-bw/2)+'" y="'+(padT+innerH-bh)+'" width="'+bw+'" height="'+bh+'" fill="'+color.replace(')',',0.2)').replace('var(','rgba(').replace('--accent','200,242,94').replace('--accent2','124,109,250')+'" rx="2"/>';
-  }).join('');
-  const line=n>1?'<polyline points="'+pts.map(p=>p.x+','+p.y).join(' ')+'" fill="none" stroke="'+color+'" stroke-width="1.5" stroke-linejoin="round" opacity="0.85"/>':'';
-  const dots=entries.map((e,i)=>
-    '<circle cx="'+pts[i].x+'" cy="'+pts[i].y+'" r="3" fill="'+color+'" stroke="var(--bg)" stroke-width="1.5"/>'+
-    '<text x="'+pts[i].x+'" y="'+(H-3)+'" text-anchor="middle" font-size="7" fill="var(--muted)" font-family="DM Mono,monospace">'+fmtShort(e.date)+'</text>'
-  ).join('');
-  const yTop='<text x="'+(padL-3)+'" y="'+(padT+4)+'" text-anchor="end" font-size="7" fill="var(--muted)" font-family="DM Mono,monospace">'+mxK+'kg</text>';
-  const baseY=padT+innerH;
-  const baseline='<line x1="'+padL+'" y1="'+baseY+'" x2="'+(W-padR)+'" y2="'+baseY+'" stroke="var(--border)" stroke-width="0.5"/>';
-  return '<svg style="width:100%;overflow:visible;display:block;margin:4px 0 2px" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'+yTop+baseline+bars+line+dots+'</svg>';
-}
-
-// Given a list of workouts, build nested: split → exercise → chart
-function buildSplitExerciseHTML(workouts, prefix){
-  if(!workouts.length) return '<div style="padding:16px;text-align:center;color:var(--muted);font-size:13px">Sin entrenamientos en este período</div>';
-
-  // Group workouts by splitName
-  const splitMap={};
-  workouts.forEach(w=>{
-    const key=w.splitName||'Sin entrenamiento';
-    if(!splitMap[key]) splitMap[key]=[];
-    splitMap[key].push(w);
-  });
-
-  return Object.entries(splitMap).map(([splitName, ws], si)=>{
-    const splitId=prefix+'s'+si;
-    const totalVol=ws.reduce((a,w)=>a+w.exercises.reduce((b,e)=>b+calcVol(e),0),0);
-    const volLabel=totalVol>=1000?(totalVol/1000).toFixed(1)+'t':totalVol.toLocaleString()+'kg';
-
-    // Collect all exercise names in this split (preserve order)
-    const exNames=[...new Set(ws.flatMap(w=>w.exercises.map(e=>e.name)))];
-
-    // For each exercise, build entries across sessions (sorted oldest→newest)
-    const exRows=exNames.map((name,ei)=>{
-      const entries=ws.map(w=>{
-        const ex=w.exercises.find(e=>e.name===name);
-        if(!ex) return null;
-        const ds=ex.sets.filter(s=>s.done&&parseFloat(s.kg)>0);
-        if(!ds.length) return null;
-        return{date:w.date, maxKg:Math.max(...ds.map(s=>parseFloat(s.kg))),
-          vol:ds.reduce((a,s)=>a+(parseFloat(s.kg)||0)*(parseFloat(s.reps)||0),0)};
-      }).filter(Boolean).reverse(); // oldest first
-      if(!entries.length) return '';
-      const latest=entries[entries.length-1];
-      const chart=miniExChart(entries,'var(--accent)');
-      return '<div class="hist-ex-row">'+
-        '<div class="hist-ex-label"><span>'+name+'</span>'+
-        '<span style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--accent)">'+latest.maxKg+'kg</span></div>'+
-        chart+'</div>';
-    }).join('');
-
-    return '<div class="hist-split-acc" id="'+splitId+'">'+
-      '<div class="hist-split-header" onclick="toggleSplitAcc(\''+splitId+'\')">'+
-        '<span style="flex:1">'+splitName+'</span>'+
-        '<span style="font-size:11px;color:var(--muted);font-family:\'DM Mono\',monospace;margin-right:6px">'+ws.length+' ses · '+volLabel+'</span>'+
-        '<span class="hist-split-arrow">⌄</span>'+
-      '</div>'+
-      '<div class="hist-split-body">'+exRows+'</div>'+
-    '</div>';
+  const tVol=STATE.workouts.reduce((a,w)=>a+w.exercises.reduce((b,e)=>b+calcVol(e),0),0);
+  hc.innerHTML=`
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val">${STATE.workouts.length}</div><div class="stat-lbl">Sesiones</div></div>
+      <div class="stat-card"><div class="stat-val">${(tVol/1000).toFixed(1)}t</div><div class="stat-lbl">Vol total</div></div>
+    </div>`+
+  STATE.workouts.map((w,wi)=>{
+    const vol=w.exercises.reduce((a,e)=>a+calcVol(e),0);
+    const done=w.exercises.reduce((a,e)=>a+e.sets.filter(s=>s.done).length,0);
+    return`<div class="card" style="cursor:pointer" onclick="toggleHD(${wi})">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div style="font-size:15px;font-weight:600">${w.splitName||'Entrenamiento'}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">${w.date} · ${w.exercises.length} ejerc · ${done} series</div></div>
+        <span style="font-size:12px;background:rgba(200,242,94,.08);color:var(--accent);padding:3px 10px;border-radius:20px;border:1px solid rgba(200,242,94,.2)">${vol.toLocaleString()} kg</span>
+      </div>
+      <div id="hd-${wi}" style="display:none;margin-top:10px;border-top:1px solid var(--border);padding-top:10px">
+        ${w.exercises.map(e=>{
+          const ds=e.sets.filter(s=>s.done);
+          return`<div style="padding:5px 0;border-bottom:1px solid var(--border)">
+            <div style="display:flex;justify-content:space-between"><span style="font-size:13px">${e.name}</span>
+              <span style="font-size:11px;color:var(--muted)">${calcVol(e).toLocaleString()} kg</span></div>
+            ${ds.length?`<div style="margin-top:4px">${ds.map(s=>`<span style="font-size:10px;background:var(--surface2);padding:2px 7px;border-radius:4px;margin-right:3px;font-family:'DM Mono',monospace">${s.kg}kg×${s.reps} R${s.rir}</span>`).join('')}</div>`:''}
+          </div>`;}).join('')}
+      </div>
+    </div>`;
   }).join('');
 }
-
-function toggleSplitAcc(id){
-  document.getElementById(id).classList.toggle('open');
-}
-
-// ─── Top-level accordion toggle ────────────────────────
-function toggleAcc(id, renderFn){
-  const el=document.getElementById(id);
-  const wasOpen=el.classList.contains('open');
-  el.classList.toggle('open');
-  if(!wasOpen && renderFn) window[renderFn]();
-}
-
-// ─── Última semana ─────────────────────────────────────
-function renderWeekAcc(){
-  const body=document.getElementById('body-acc-week');
-  const today=new Date();
-  const from=new Date(today); from.setDate(from.getDate()-6); from.setHours(0,0,0,0);
-
-  // Build week bar chart first
-  const days=[];
-  for(let i=6;i>=0;i--){
-    const d=new Date(); d.setDate(d.getDate()-i);
-    const dateStr=d.toLocaleDateString('es-CR');
-    const ws=STATE.workouts.filter(w=>w.date===dateStr);
-    const vol=ws.reduce((a,w)=>a+w.exercises.reduce((b,e)=>b+calcVol(e),0),0);
-    days.push({label:DAYS_S[d.getDay()],dateStr,vol,isToday:i===0});
-  }
-  const maxVol=Math.max(...days.map(d=>d.vol),1);
-  const W=320,H=110,pL=30,pR=8,pT=12,pB=26;
-  const iW=W-pL-pR,iH=H-pT-pB;
-  const step=iW/7;
-  const bw=Math.floor(step*0.55);
-  const weekBars=days.map((d,i)=>{
-    const x=pL+step*i+step/2;
-    const bh=d.vol>0?Math.max(3,Math.round((d.vol/maxVol)*iH)):0;
-    const y=pT+iH-bh;
-    const col=d.isToday?'var(--accent)':d.vol>0?'rgba(200,242,94,0.4)':'var(--surface2)';
-    const lbl=d.vol>0?(d.vol>=1000?(d.vol/1000).toFixed(1)+'t':d.vol+'kg'):'';
-    return '<rect x="'+(x-bw/2)+'" y="'+y+'" width="'+bw+'" height="'+(bh||2)+'" fill="'+col+'" rx="3"/>'+
-      '<text x="'+x+'" y="'+(H-pB+14)+'" text-anchor="middle" font-size="9" fill="'+(d.isToday?'var(--accent)':'var(--muted)')+'" font-weight="'+(d.isToday?700:400)+'" font-family="DM Mono,monospace">'+d.label+'</text>'+
-      (lbl?'<text x="'+x+'" y="'+(y-3)+'" text-anchor="middle" font-size="8" fill="'+(d.isToday?'var(--accent)':'var(--muted)')+'" font-family="DM Mono,monospace">'+lbl+'</text>':'');
-  }).join('');
-  const yTicks=[0,0.5,1].map(f=>{
-    const val=Math.round(maxVol*f);
-    const y=pT+iH-f*iH;
-    const lbl=val>=1000?(val/1000).toFixed(1)+'t':val+'kg';
-    return '<text x="'+(pL-3)+'" y="'+(y+3)+'" text-anchor="end" font-size="7" fill="var(--muted)" font-family="DM Mono,monospace">'+lbl+'</text>'+
-      '<line x1="'+pL+'" y1="'+y+'" x2="'+(W-pR)+'" y2="'+y+'" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>';
-  }).join('');
-
-  const hasVol=days.some(d=>d.vol>0);
-  const weekChart=hasVol
-    ? '<div style="padding:12px 14px 8px;border-bottom:1px solid var(--border)"><svg style="width:100%;overflow:visible;display:block" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'+yTicks+weekBars+'</svg></div>'
-    : '';
-
-  const ws=STATE.workouts.filter(w=>{
-    const d=parseDateCR(w.date); return d&&d>=from;
-  });
-
-  body.innerHTML=weekChart+buildSplitExerciseHTML(ws, 'w');
-}
-
-// ─── Último mes ────────────────────────────────────────
-function renderMonthAcc(){
-  const body=document.getElementById('body-acc-month');
-  const today=new Date();
-  const from=new Date(today); from.setDate(from.getDate()-30);
-  const ws=STATE.workouts.filter(w=>{
-    const d=parseDateCR(w.date); return d&&d>=from&&d<=today;
-  });
-  body.innerHTML=buildSplitExerciseHTML(ws,'m');
-}
-
-// ─── Rango ─────────────────────────────────────────────
-function renderRangeAcc(){
-  const fromVal=document.getElementById('hist-range-from').value;
-  const toVal=document.getElementById('hist-range-to').value;
-  const content=document.getElementById('body-acc-range-content');
-  if(!fromVal||!toVal){content.innerHTML='';return;}
-  const from=new Date(fromVal+'T00:00:00');
-  const to=new Date(toVal+'T23:59:59');
-  if(from>to){content.innerHTML='<div style="padding:10px 14px;color:var(--accent3);font-size:12px">La fecha inicio debe ser menor que la fecha fin</div>';return;}
-  const ws=STATE.workouts.filter(w=>{
-    const d=parseDateCR(w.date); return d&&d>=from&&d<=to;
-  });
-  content.innerHTML=buildSplitExerciseHTML(ws,'r');
-}
-
-// ─── Por ejercicio ─────────────────────────────────────
-function populateHistExSelect(){
-  const sel=document.getElementById('hist-ex-select');
-  if(!sel) return;
-  const cur=sel.value;
-  sel.innerHTML='<option value="">Selecciona un ejercicio…</option>';
-  Object.values(STATE.exercises).flat().forEach(e=>{
-    const o=document.createElement('option'); o.value=e.name; o.textContent=e.name; sel.appendChild(o);
-  });
-  if(cur) sel.value=cur;
-}
-
-function renderExAcc(){
-  const name=document.getElementById('hist-ex-select').value;
-  const content=document.getElementById('body-acc-exercise-content');
-  if(!name){content.innerHTML='';return;}
-  const ws=STATE.workouts.filter(w=>w.exercises.some(e=>e.name===name));
-  if(!ws.length){content.innerHTML='<div style="padding:16px;text-align:center;color:var(--muted);font-size:13px">Sin sesiones con este ejercicio</div>';return;}
-
-  const entries=ws.map(w=>{
-    const ex=w.exercises.find(e=>e.name===name);
-    const ds=ex.sets.filter(s=>s.done&&parseFloat(s.kg)>0);
-    if(!ds.length) return null;
-    const restVals=ds.map(s=>s.restSecs||0).filter(r=>r>0);
-    return{date:w.date, maxKg:Math.max(...ds.map(s=>parseFloat(s.kg))),
-      vol:ds.reduce((a,s)=>a+(parseFloat(s.kg)||0)*(parseFloat(s.reps)||0),0),
-      sets:ds, avgRest:restVals.length?Math.round(restVals.reduce((a,b)=>a+b,0)/restVals.length):0};
-  }).filter(Boolean).reverse();
-
-  const latest=entries[entries.length-1];
-  const first=entries[0];
-  const imp=entries.length>1&&first.maxKg>0?((latest.maxKg-first.maxKg)/first.maxKg*100).toFixed(1):null;
-
-  const chart=miniExChart(entries,'var(--accent)');
-
-  const statBar=entries.length>1?'<div class="stat-grid" style="margin:0 14px 10px">'+
-    '<div class="stat-card"><div class="stat-val">'+latest.maxKg+'kg</div><div class="stat-lbl">Último máx</div></div>'+
-    '<div class="stat-card"><div class="stat-val" style="color:'+(imp>=0?'var(--accent)':'var(--accent3)')+'">'+
-      (imp>0?'+':'')+imp+'%</div><div class="stat-lbl">Progresión</div></div></div>':'';
-
-  const sessionList=ws.map((w,i)=>{
-    const ex=w.exercises.find(e=>e.name===name);
-    const ds=ex.sets.filter(s=>s.done);
-    const id='exc'+i;
-    const setsHTML=ds.map(s=>{
-      const r=s.restSecs>0?(s.restSecs>=60?Math.floor(s.restSecs/60)+'m'+(s.restSecs%60?s.restSecs%60+'s':''):s.restSecs+'s'):'';
-      return '<span style="font-size:10px;background:var(--surface2);padding:2px 7px;border-radius:4px;margin:2px;display:inline-block;font-family:\'DM Mono\',monospace">'+s.kg+'kg×'+s.reps+(r?' ⏱'+r:'')+'</span>';
-    }).join('');
-    return '<div style="padding:9px 14px;border-bottom:1px solid var(--border);cursor:pointer" onclick="toggleSplitAcc(\''+id+'\')">'+
-      '<div style="display:flex;justify-content:space-between;align-items:center">'+
-        '<div style="font-size:12px;color:var(--muted)">'+w.date+'</div>'+
-        '<span style="font-size:11px;color:var(--accent);font-family:\'DM Mono\',monospace">'+calcVol(ex).toLocaleString()+' kg</span>'+
-      '</div>'+
-      '<div id="'+id+'" style="display:none;margin-top:5px">'+setsHTML+'</div>'+
-    '</div>';
-  }).join('');
-
-  content.innerHTML='<div style="padding:12px 14px 4px">'+chart+'</div>'+statBar+sessionList;
-
-  // override toggleSplitAcc for inline divs (they use display not class)
-}
-
-// toggleSplitAcc handles both .hist-split-acc and inline divs
-const _origToggleSplitAcc=window.toggleSplitAcc;
-function toggleSplitAcc(id){
-  const el=document.getElementById(id);
-  if(!el) return;
-  if(el.classList.contains('hist-split-acc')) el.classList.toggle('open');
-  else el.style.display=el.style.display==='none'?'block':'none';
-}
+function toggleHD(i){ const d=document.getElementById('hd-'+i); if(d) d.style.display=d.style.display==='none'?'block':'none'; }
 
 // ══════════════════════ PROGRESS ══════════════════════
 function populateProgSelect(){
@@ -1785,167 +794,134 @@ function renderProgressView(){
     const ex=w.exercises.find(e=>e.name===name);
     const ds=ex.sets.filter(s=>s.done&&parseFloat(s.kg)>0);
     if(!ds.length) return null;
-    const restVals=ds.map(s=>s.restSecs||0).filter(r=>r>0);
-    const avgRest=restVals.length?Math.round(restVals.reduce((a,b)=>a+b,0)/restVals.length):0;
     return{date:w.date,maxKg:Math.max(...ds.map(s=>parseFloat(s.kg))),
-      vol:ds.reduce((a,s)=>a+(parseFloat(s.kg)||0)*(parseFloat(s.reps)||0),0),
-      sets:ds, avgRest};
+      vol:ds.reduce((a,s)=>a+(parseFloat(s.kg)||0)*(parseFloat(s.reps)||0),0),sets:ds};
   }).filter(Boolean).reverse();
   if(!entries.length){pv.innerHTML=`<div class="empty-state"><div class="empty-icon">📈</div><p>Sin datos aún.</p></div>`;return;}
   const mxK=Math.max(...entries.map(e=>e.maxKg))||1;
   const mxV=Math.max(...entries.map(e=>e.vol))||1;
   const latest=entries[entries.length-1], first=entries[0];
   const imp=first.maxKg>0?((latest.maxKg-first.maxKg)/first.maxKg*100).toFixed(1):0;
-
-  // SVG progress chart: bars for weight + line+dots for trend
-  const chartW=340, chartH=110, padL=36, padR=12, padT=14, padB=24;
-  const innerW=chartW-padL-padR, innerH=chartH-padT-padB;
-  const n=entries.length;
-  const xStep=n>1?innerW/(n-1):innerW/2;
-  const pts=entries.map((e,i)=>({
-    x:padL+(n>1?i*xStep:innerW/2),
-    y:padT+innerH-(e.maxKg/mxK)*innerH
-  }));
-
-  // Bar chart (weight) — subtle background bars
-  const bars=entries.map((e,i)=>{
-    const bw=Math.max(8,Math.min(24,xStep*0.55));
-    const bh=(e.maxKg/mxK)*innerH;
-    return`<rect x="${pts[i].x-bw/2}" y="${padT+innerH-bh}" width="${bw}" height="${bh}"
-      fill="rgba(200,242,94,0.18)" rx="3"/>`;
-  }).join('');
-
-  // Polyline trend
-  const polyline=pts.map((p,i)=>`${p.x},${p.y}`).join(' ');
-
-  // Dots + date labels
-  const dotsLabels=entries.map((e,i)=>{
-    const p=pts[i];
-    const shortDate=e.date.split('/').slice(0,2).join('/');
-    return`<circle cx="${p.x}" cy="${p.y}" r="4" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"
-      class="prog-dot" onmouseenter="showProgTip(event,'${e.date}: ${e.maxKg}kg')" onmouseleave="hideProgTip()"/>
-      <text x="${p.x}" y="${chartH-4}" text-anchor="middle" font-size="8" fill="var(--muted)" font-family="DM Mono,monospace">${shortDate}</text>`;
-  }).join('');
-
-  // Y axis labels
-  const yLabels=[0,0.5,1].map(f=>{
-    const val=(mxK*f).toFixed(f===0?0:1);
-    const y=padT+innerH-(f*innerH);
-    return`<text x="${padL-4}" y="${y+3}" text-anchor="end" font-size="8" fill="var(--muted)" font-family="DM Mono,monospace">${val}</text>
-    <line x1="${padL}" y1="${y}" x2="${chartW-padR}" y2="${y}" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>`;
-  }).join('');
-
-  const svgKg=`<svg class="prog-chart-svg" viewBox="0 0 ${chartW} ${chartH}" xmlns="http://www.w3.org/2000/svg">
-    ${yLabels}${bars}
-    <polyline points="${polyline}" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round" opacity="0.7"/>
-    ${dotsLabels}
-  </svg>`;
-
-  // Volume bars svg
-  const volPts=entries.map((e,i)=>({
-    x:padL+(n>1?i*xStep:innerW/2),
-    y:padT+innerH-(e.vol/mxV)*innerH
-  }));
-  const volBars=entries.map((e,i)=>{
-    const bw=Math.max(8,Math.min(24,xStep*0.55));
-    const bh=(e.vol/mxV)*innerH;
-    return`<rect x="${volPts[i].x-bw/2}" y="${padT+innerH-bh}" width="${bw}" height="${bh}"
-      fill="rgba(124,109,250,0.25)" rx="3"/>`;
-  }).join('');
-  const volLine=volPts.map(p=>`${p.x},${p.y}`).join(' ');
-  const volDots=entries.map((e,i)=>{
-    const p=volPts[i];
-    const shortDate=e.date.split('/').slice(0,2).join('/');
-    return`<circle cx="${p.x}" cy="${p.y}" r="4" fill="var(--accent2)" stroke="var(--bg)" stroke-width="2"
-      class="prog-dot" onmouseenter="showProgTip(event,'${e.date}: ${e.vol.toLocaleString()}kg vol')" onmouseleave="hideProgTip()"/>
-      <text x="${p.x}" y="${chartH-4}" text-anchor="middle" font-size="8" fill="var(--muted)" font-family="DM Mono,monospace">${shortDate}</text>`;
-  }).join('');
-  const mxVK=(mxV/1000).toFixed(1);
-  const volYLabels=[0,0.5,1].map(f=>{
-    const val=f===0?'0':`${(mxV*f/1000).toFixed(1)}t`;
-    const y=padT+innerH-(f*innerH);
-    return`<text x="${padL-4}" y="${y+3}" text-anchor="end" font-size="8" fill="var(--muted)" font-family="DM Mono,monospace">${val}</text>
-    <line x1="${padL}" y1="${y}" x2="${chartW-padR}" y2="${y}" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>`;
-  }).join('');
-  const svgVol=`<svg class="prog-chart-svg" viewBox="0 0 ${chartW} ${chartH}" xmlns="http://www.w3.org/2000/svg">
-    ${volYLabels}${volBars}
-    <polyline points="${volLine}" fill="none" stroke="var(--accent2)" stroke-width="1.5" stroke-linejoin="round" opacity="0.7"/>
-    ${volDots}
-  </svg>`;
-
-  // Rest time analysis
-  const restEntries=entries.filter(e=>e.avgRest>0);
-  const restSection=restEntries.length?`
-    <div class="sec-label" style="margin-top:14px">Descanso promedio por sesión</div>
-    <div class="chart-wrap">${restEntries.map(e=>{
-      const mxR=Math.max(...restEntries.map(x=>x.avgRest))||1;
-      const p=Math.round((e.avgRest/mxR)*100);
-      const restStr=e.avgRest>=60?`${Math.floor(e.avgRest/60)}m${e.avgRest%60>0?(e.avgRest%60)+'s':''}` :`${e.avgRest}s`;
-      const col=e.avgRest<=90?'var(--core)':e.avgRest<=180?'var(--legs)':'var(--accent3)';
-      return`<div class="chart-row">
-        <span class="chart-lbl">${e.date.split('/').slice(0,2).join('/')}</span>
-        <div class="chart-track"><div class="chart-fill" style="width:${p}%;background:${col}">${restStr}</div></div>
-        <span style="font-size:10px;color:var(--muted);min-width:38px;text-align:right;font-family:'DM Mono',monospace">${restStr}</span>
-      </div>`;}).join('')}</div>
-    <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6;padding:0 2px">
-      <span style="color:var(--core)">■</span> ≤1:30 corto &nbsp;
-      <span style="color:var(--legs)">■</span> 1:30–3:00 moderado &nbsp;
-      <span style="color:var(--accent3)">■</span> >3:00 largo
-    </div>` : '';
-
   pv.innerHTML=`
     <div class="stat-grid">
       <div class="stat-card"><div class="stat-val">${latest.maxKg} kg</div><div class="stat-lbl">Mejor peso</div></div>
-      <div class="stat-card"><div class="stat-val" style="color:${imp>=0?'var(--accent)':'var(--accent3)'}">${imp>0?'+':''}${imp}%</div><div class="stat-lbl">Mejora total</div></div>
+      <div class="stat-card"><div class="stat-val">${imp>0?'+':''}${imp}%</div><div class="stat-lbl">Mejora</div></div>
     </div>
-    <div class="sec-label">Peso máximo por sesión</div>
-    <div class="prog-chart-wrap" id="prog-chart-kg">${svgKg}</div>
-    <div class="sec-label" style="margin-top:4px">Volumen por sesión</div>
-    <div class="prog-chart-wrap" id="prog-chart-vol">${svgVol}</div>
-    ${restSection}
-    <div class="sec-label" style="margin-top:14px">Detalle por sesión</div>
+    <div class="sec-label">Peso máximo</div>
+    <div class="chart-wrap">${entries.map(e=>{const p=Math.round((e.maxKg/mxK)*100);return`<div class="chart-row">
+      <span class="chart-lbl">${e.date.split('/').slice(0,2).join('/')}</span>
+      <div class="chart-track"><div class="chart-fill" style="width:${p}%;background:var(--accent)">${e.maxKg} kg</div></div>
+      <span style="font-size:10px;color:var(--muted);min-width:38px;text-align:right;font-family:'DM Mono',monospace">${e.maxKg}kg</span>
+    </div>`}).join('')}</div>
+    <div class="sec-label" style="margin-top:12px">Volumen</div>
+    <div class="chart-wrap">${entries.map(e=>{const p=Math.round((e.vol/mxV)*100);return`<div class="chart-row">
+      <span class="chart-lbl">${e.date.split('/').slice(0,2).join('/')}</span>
+      <div class="chart-track"><div class="chart-fill" style="width:${p}%;background:var(--accent2)">${e.vol>0?e.vol.toLocaleString():''}</div></div>
+      <span style="font-size:10px;color:var(--muted);min-width:38px;text-align:right;font-family:'DM Mono',monospace">${e.vol.toLocaleString()}</span>
+    </div>`}).join('')}</div>
+    <div class="sec-label" style="margin-top:12px">Por sesión</div>
     ${entries.map(e=>`<div class="card" style="margin-bottom:8px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <div style="font-size:11px;color:var(--muted)">${e.date}</div>
-        ${e.avgRest>0?`<span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">⏱ desc.avg: ${e.avgRest>=60?Math.floor(e.avgRest/60)+'m'+(e.avgRest%60>0?e.avgRest%60+'s':''):e.avgRest+'s'}</span>`:''}
-      </div>
-      ${e.sets.map(s=>{
-        const restStr=s.restSecs>0?(s.restSecs>=60?Math.floor(s.restSecs/60)+'m'+(s.restSecs%60>0?s.restSecs%60+'s':''):s.restSecs+'s'):'';
-        const restTag=restStr?(' <span style="color:var(--muted)">⏱'+restStr+'</span>'):'';
-        return'<span style="font-size:11px;background:var(--surface2);padding:3px 8px;border-radius:4px;margin:2px;display:inline-block;font-family:\'DM Mono\',monospace">'+s.kg+'kg×'+s.reps+'r RIR'+s.rir+restTag+'</span>';
-      }).join('')}
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px">${e.date}</div>
+      ${e.sets.map(s=>`<span style="font-size:11px;background:var(--surface2);padding:3px 8px;border-radius:4px;margin:2px;display:inline-block;font-family:'DM Mono',monospace">${s.kg}kg × ${s.reps}r  RIR${s.rir}</span>`).join('')}
     </div>`).join('')}`;
+}
 
-  // tooltip div
-  if(!document.getElementById('prog-tip')){
-    const tip=document.createElement('div');
-    tip.id='prog-tip'; tip.className='prog-tooltip'; document.body.appendChild(tip);
+// ══════════════════════ SWAP EXERCISE ══════════════════════
+let swapTargetEi = null;
+
+function openSwapExercise(ei){
+  swapTargetEi = ei;
+  const ex = sessionData.exercises[ei];
+  document.getElementById('swap-current-label').textContent = 'Reemplazando: ' + ex.name;
+  document.getElementById('swap-search').value = '';
+  filterSwapList();
+  const overlay = document.getElementById('swap-overlay');
+  overlay.style.display = 'flex';
+  setTimeout(()=>document.getElementById('swap-search').focus(), 100);
+}
+
+function filterSwapList(){
+  const q = document.getElementById('swap-search').value.toLowerCase();
+  const list = document.getElementById('swap-list');
+  const allEx = Object.entries(STATE.exercises);
+  const rows = allEx.flatMap(([mg, exs])=>
+    exs.filter(e=>e.name.toLowerCase().includes(q))
+       .map(e=>({...e, mg}))
+  );
+  if(!rows.length){
+    list.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">Sin resultados</div>';
+    return;
   }
+  list.innerHTML = rows.map(e=>{
+    const isCur = sessionData.exercises[swapTargetEi]?.name === e.name;
+    return `<div onclick="${isCur?'':'confirmSwap(\''+e.name.replace(/'/g,"\\'")+"','"+e.mg+"')"}"
+      style="padding:11px 16px;display:flex;align-items:center;gap:10px;cursor:${isCur?'default':'pointer'};
+             background:${isCur?'var(--surface2)':'transparent'};border-bottom:1px solid var(--border);opacity:${isCur?0.5:1}"
+      onmouseenter="if(!${isCur}) this.style.background='var(--surface2)'"
+      onmouseleave="if(!${isCur}) this.style.background='transparent'">
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:500">${e.name}${isCur?' <span style="font-size:10px;color:var(--muted)">(actual)</span>':''}</div>
+        <div style="font-size:11px;color:var(--muted)">${e.mg}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
-function showProgTip(e, text){
-  const tip=document.getElementById('prog-tip');
-  if(!tip) return;
-  tip.textContent=text; tip.classList.add('show');
-  tip.style.left=(e.pageX-60)+'px'; tip.style.top=(e.pageY-36)+'px';
+
+function confirmSwap(name, muscle){
+  if(swapTargetEi === null) return;
+  const ex = sessionData.exercises[swapTargetEi];
+  ex.name = name;
+  ex.muscle = muscle;
+  ex._fromHistory = false;
+  closeSwap();
+  renderSession();
+  autoSave();
 }
-function hideProgTip(){ const t=document.getElementById('prog-tip'); if(t) t.classList.remove('show'); }
+
+function closeSwap(){
+  document.getElementById('swap-overlay').style.display = 'none';
+  swapTargetEi = null;
+}
 
 // ══════════════════════ INIT ══════════════════════
 document.getElementById('today-label').textContent=DAYS_L[todayDow];
 updateTimerDisplay();
 
-// Check if already logged in
+// Check session before loading app
 (async ()=>{
-  const me = await fetch('/api/auth/me',{credentials:'include'}).then(r=>r.ok?r.json():null).catch(()=>null);
-  if(me && !me.error){
-    STATE.currentUser=me;
-    updateUserBar();
-    await loadAll();
-  } else {
-    showProfileScreen();
-  }
+  try {
+    const r = await fetch('/api/auth/me', {credentials:'include'});
+    if(r.ok){
+      const me = await r.json();
+      if(me && !me.error){
+        STATE.currentUser = me;
+        await loadAll();
+        return;
+      }
+    }
+  } catch(e){}
+  // No session — show profile picker
+  showProfileScreen();
 })();
 </script>
+<!-- MODAL: SWAP EXERCISE -->
+<div id="swap-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:400;align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeSwap()">
+  <div style="background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:480px;max-height:80vh;display:flex;flex-direction:column">
+    <div style="padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700">Cambiar ejercicio</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px" id="swap-current-label"></div>
+      </div>
+      <button class="btn-ghost" style="font-size:18px;padding:4px 10px" onclick="closeSwap()">×</button>
+    </div>
+    <div style="padding:10px 14px;border-bottom:1px solid var(--border)">
+      <input class="form-input" id="swap-search" placeholder="Buscar ejercicio…" oninput="filterSwapList()" style="width:100%">
+    </div>
+    <div style="overflow-y:auto;padding:8px 0" id="swap-list"></div>
+  </div>
+</div>
+
 </body>
 </html>
+
 
