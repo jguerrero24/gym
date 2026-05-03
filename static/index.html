@@ -114,6 +114,9 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .loading{display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:14px}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 18px;font-size:13px;color:var(--text);z-index:200;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.show{opacity:1}
+/* SWAP BTN */
+.swap-btn{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:11px;cursor:pointer;transition:all .15s;flex-shrink:0}
+.swap-btn:hover{border-color:var(--accent2);color:var(--accent2)}
 </style>
 </head>
 <body>
@@ -124,6 +127,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div class="topbar">
       <div class="topbar-title">GymLog</div>
       <span id="today-label" style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace"></span>
+      <button class="btn-ghost" onclick="logoutUser()" style="font-size:11px;padding:4px 10px;border:1px solid var(--border);border-radius:6px;flex-shrink:0">👤 Salir</button>
     </div>
     <div class="scroll-area">
       <div class="sec-label">Esta semana</div>
@@ -273,6 +277,28 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   </nav>
 </div>
 
+<!-- PROFILE SCREEN — shown when no session exists -->
+<div id="profile-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:500;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto">
+  <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--accent);margin-bottom:4px">💪 GymLog</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:32px">Selecciona tu perfil</div>
+  <div id="profile-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;width:100%;max-width:420px"></div>
+  <div id="profile-error" style="display:none;margin-top:20px;color:var(--accent3);font-size:13px;text-align:center"></div>
+</div>
+
+<!-- PIN MODAL -->
+<div id="pin-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:600;align-items:center;justify-content:center">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;width:290px;text-align:center">
+    <div id="pin-user-info" style="margin-bottom:16px"></div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Ingresa tu PIN</div>
+    <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8"
+           class="form-input" id="pin-input" placeholder="••••"
+           style="text-align:center;font-size:22px;letter-spacing:8px">
+    <div id="pin-error" style="color:var(--accent3);font-size:12px;margin-top:8px;display:none"></div>
+    <button class="btn btn-accent btn-block" style="margin-top:16px" onclick="submitPin()">Entrar</button>
+    <button class="btn-ghost" style="margin-top:8px;width:100%;text-align:center" onclick="closePinModal()">Cancelar</button>
+  </div>
+</div>
+
 <!-- MODAL: ADD EXERCISE -->
 <div class="modal-overlay" id="modal-add-ex">
   <div class="modal-box">
@@ -290,19 +316,37 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   </div>
 </div>
 
+<!-- MODAL: SWAP EXERCISE -->
+<div id="swap-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:400;align-items:flex-end;justify-content:center"
+     onclick="if(event.target===this)closeSwap()">
+  <div style="background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:480px;max-height:80vh;display:flex;flex-direction:column">
+    <div style="padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700">Cambiar ejercicio</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px" id="swap-current-label"></div>
+      </div>
+      <button class="btn-ghost" style="font-size:18px;padding:4px 10px" onclick="closeSwap()">×</button>
+    </div>
+    <div style="padding:10px 14px;border-bottom:1px solid var(--border)">
+      <input class="form-input" id="swap-search" placeholder="Buscar ejercicio…" oninput="filterSwapList()" style="width:100%">
+    </div>
+    <div style="overflow-y:auto;padding:8px 0" id="swap-list"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 // ══════════════════════ API HELPERS ══════════════════════
 const api = {
-  async get(path){ const r=await fetch(path); return r.json(); },
-  async post(path,body){ const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); return r.json(); },
-  async put(path,body){ const r=await fetch(path,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); return r.json(); },
-  async del(path){ const r=await fetch(path,{method:'DELETE'}); return r.json(); }
+  async get(path){ const r=await fetch(path,{credentials:'include'}); return r.json(); },
+  async post(path,body){ const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(body)}); return r.json(); },
+  async put(path,body){ const r=await fetch(path,{method:'PUT',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(body)}); return r.json(); },
+  async del(path){ const r=await fetch(path,{method:'DELETE',credentials:'include'}); return r.json(); }
 };
 
 // ══════════════════════ STATE ══════════════════════
-let STATE = { exercises:{}, splits:[], weekPlan:{}, workouts:[] };
+let STATE = { exercises:{}, splits:[], weekPlan:{}, workouts:[], currentUser:null };
 let sessionData = null;
 let editSplitId = null;
 let selectedExercises = [];
@@ -319,20 +363,135 @@ const todayStr = now.toLocaleDateString('es-CR');
 
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
 
+// ══════════════════════ PROFILE / AUTH ══════════════════════
+let _allUsers = [];
+let pendingLoginUser = null;
+
+async function showProfileScreen(){
+  document.getElementById('profile-screen').style.display = 'flex';
+  document.getElementById('main-nav').style.display = 'none';
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+
+  const grid = document.getElementById('profile-grid');
+  const errEl = document.getElementById('profile-error');
+  grid.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;grid-column:1/-1">Cargando perfiles…</div>';
+  errEl.style.display = 'none';
+
+  try {
+    _allUsers = await api.get('/api/users');
+    if(!Array.isArray(_allUsers) || _allUsers.length === 0){
+      grid.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;grid-column:1/-1">No hay perfiles disponibles.</div>';
+      return;
+    }
+    grid.innerHTML = _allUsers.map(u => `
+      <div onclick="selectProfile('${u.id}')"
+           style="background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);
+                  padding:16px 8px;text-align:center;cursor:pointer;transition:all .15s"
+           onmouseenter="this.style.borderColor='${u.color||'var(--accent)'}'"
+           onmouseleave="this.style.borderColor='var(--border)'">
+        <div style="font-size:36px">${u.avatar||'👤'}</div>
+        <div style="font-size:13px;font-weight:600;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u.name}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px">${u.role}${u.has_pin?' 🔒':''}</div>
+      </div>`).join('');
+  } catch(e){
+    grid.innerHTML = '';
+    errEl.style.display = 'block';
+    errEl.textContent = 'Error conectando al servidor. Verifica tu conexión.';
+  }
+}
+
+function selectProfile(uid){
+  const u = _allUsers.find(x => x.id === uid);
+  if(!u) return;
+  if(u.has_pin){
+    pendingLoginUser = u;
+    document.getElementById('pin-user-info').innerHTML = `
+      <div style="font-size:36px">${u.avatar||'👤'}</div>
+      <div style="font-size:14px;font-weight:600;margin-top:6px">${u.name}</div>`;
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-error').style.display = 'none';
+    document.getElementById('pin-modal').style.display = 'flex';
+    setTimeout(() => document.getElementById('pin-input').focus(), 120);
+  } else {
+    doLogin(uid, '');
+  }
+}
+
+async function submitPin(){
+  if(!pendingLoginUser) return;
+  const pin = document.getElementById('pin-input').value.trim();
+  await doLogin(pendingLoginUser.id, pin);
+}
+
+async function doLogin(uid, pin){
+  try {
+    const r = await api.post('/api/auth/login', {user_id: uid, pin});
+    if(r.error){
+      const errEl = document.getElementById('pin-error');
+      errEl.style.display = 'block';
+      errEl.textContent = r.error;
+      return;
+    }
+    closePinModal();
+    STATE.currentUser = r.user;
+    document.getElementById('profile-screen').style.display = 'none';
+    document.getElementById('main-nav').style.display = 'flex';
+    // Activate home view
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-home').classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+    await loadAll();
+  } catch(e){
+    const errEl = document.getElementById('pin-error');
+    errEl.style.display = 'block';
+    errEl.textContent = 'Error de conexión. Intenta de nuevo.';
+  }
+}
+
+function closePinModal(){
+  document.getElementById('pin-modal').style.display = 'none';
+  pendingLoginUser = null;
+}
+
+async function logoutUser(){
+  try { await api.post('/api/auth/logout', {}); } catch(e){}
+  STATE = { exercises:{}, splits:[], weekPlan:{}, workouts:[], currentUser:null };
+  sessionData = null;
+  stopTimer();
+  if(typeof sessionClockInterval !== 'undefined') clearInterval(sessionClockInterval);
+  document.getElementById('timer-panel').classList.remove('open');
+  document.getElementById('main-nav').style.display = 'none';
+  showProfileScreen();
+}
+
 // ══════════════════════ LOAD ALL ══════════════════════
 async function loadAll(){
-  const [exercises, splits, weekPlan, workouts] = await Promise.all([
-    api.get('/api/exercises'),
-    api.get('/api/splits'),
-    api.get('/api/week_plan'),
-    api.get('/api/workouts')
-  ]);
-  STATE.exercises = exercises;
-  STATE.splits = splits;
-  STATE.weekPlan = weekPlan;
-  STATE.workouts = workouts;
-  populateProgSelect();
-  renderHomeView();
+  try {
+    const [exercises, splits, weekPlan, workouts] = await Promise.all([
+      api.get('/api/exercises'),
+      api.get('/api/splits'),
+      api.get('/api/week_plan'),
+      api.get('/api/workouts')
+    ]);
+    // Guard against unauthenticated responses
+    if(exercises && exercises.error === 'no_auth'){
+      showProfileScreen(); return;
+    }
+    STATE.exercises = exercises || {};
+    STATE.splits = Array.isArray(splits) ? splits : [];
+    // Normalize weekPlan keys to strings "0"–"6"
+    STATE.weekPlan = {};
+    if(weekPlan && typeof weekPlan === 'object' && !weekPlan.error){
+      for(let i=0;i<7;i++) STATE.weekPlan[String(i)] = weekPlan[i] ?? weekPlan[String(i)] ?? null;
+    } else {
+      for(let i=0;i<7;i++) STATE.weekPlan[String(i)] = null;
+    }
+    STATE.workouts = Array.isArray(workouts) ? workouts : [];
+    populateProgSelect();
+    renderHomeView();
+  } catch(e){
+    console.error('loadAll error:', e);
+  }
 }
 
 // ══════════════════════ NAV ══════════════════════
@@ -358,7 +517,7 @@ function renderHomeView(){
   document.getElementById('today-label').textContent = DAYS_L[todayDow];
   const wg = document.getElementById('week-grid');
   wg.innerHTML = DAYS_S.map((d,i)=>{
-    const sid = STATE.weekPlan[i];
+    const sid = STATE.weekPlan[String(i)];
     const sp = STATE.splits.find(s=>s.id==sid);
     const isToday = i===todayDow;
     const logged = STATE.workouts.some(w=>w.date===todayStr && w.dow===todayDow) && isToday;
@@ -371,7 +530,7 @@ function renderHomeView(){
   }).join('');
 
   const tb = document.getElementById('today-block');
-  const sid = STATE.weekPlan[todayDow];
+  const sid = STATE.weekPlan[String(todayDow)];
   const sp = STATE.splits.find(s=>s.id==sid);
   const existing = STATE.workouts.find(w=>w.date===todayStr);
 
@@ -428,7 +587,7 @@ function renderSplitsView(){
 
   const wa = document.getElementById('week-assign');
   wa.innerHTML = DAYS_L.map((d,i)=>{
-    const cur = STATE.weekPlan[i]||'';
+    const cur = STATE.weekPlan[String(i)] || '';
     const dayOpts = `<option value=""${cur===''?' selected':''}>Sin asignar</option>`+
       `<option value="rest"${cur==='rest'?' selected':''}>😴 Descanso</option>`+
       STATE.splits.map(s=>`<option value="${s.id}"${cur===s.id?' selected':''}>${s.name}</option>`).join('');
@@ -440,15 +599,28 @@ function renderSplitsView(){
 }
 
 async function assignDay(dow, val){
-  await api.put(`/api/week_plan/${dow}`, {split_id: val||null});
-  STATE.weekPlan[dow] = val||null;
+  const key = String(dow);
+  const newVal = val || null;
+  // Optimistically update state with string key (consistent with loadAll normalization)
+  STATE.weekPlan[key] = newVal;
   renderHomeView();
+  try {
+    await api.put(`/api/week_plan/${dow}`, {split_id: newVal});
+    toast('Plan actualizado ✓');
+  } catch(e){
+    toast('Error al guardar');
+  }
 }
+
 async function deleteSplitBtn(id){
   if(!confirm('¿Eliminar split?')) return;
   await api.del(`/api/splits/${id}`);
   STATE.splits = STATE.splits.filter(s=>s.id!==id);
-  Object.keys(STATE.weekPlan).forEach(k=>{if(STATE.weekPlan[k]===id) STATE.weekPlan[k]=null;});
+  // Remove from weekPlan
+  for(let i=0;i<7;i++){
+    const k = String(i);
+    if(STATE.weekPlan[k]===id) STATE.weekPlan[k]=null;
+  }
   renderSplitsView(); renderHomeView(); toast('Split eliminado');
 }
 
@@ -512,7 +684,7 @@ function moveDown(i){ if(i===selectedExercises.length-1) return; [selectedExerci
 async function saveSplit(){
   const name=document.getElementById('split-name-input').value.trim();
   if(!name){ alert('Ponle nombre al split'); return; }
-  if(!selectedExercises.length){ alert('Agrega al least un ejercicio'); return; }
+  if(!selectedExercises.length){ alert('Agrega al menos un ejercicio'); return; }
   const split={id: editSplitId||('s'+Date.now()), name, type:splitType, exercises:selectedExercises};
   await api.post('/api/splits', split);
   const idx=STATE.splits.findIndex(s=>s.id===split.id);
@@ -561,7 +733,6 @@ async function confirmEditExName(id, mg){
   if(!newName) return;
   await api.put(`/api/exercises/${id}`, {name:newName, muscle_group:mg});
   toast('Nombre actualizado ✓');
-  // Reload all to get cascaded updates
   await loadAll();
   navTo('view-exercises', document.querySelectorAll('.nav-btn')[2]);
 }
@@ -592,12 +763,12 @@ async function saveNewExercise(){
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 
 // ══════════════════════ SESSION ══════════════════════
-let sessionClockInterval=null, sessionClockStart=0;
+let sessionClockInterval=null;
 
 async function startSession(splitId){
   const sp=STATE.splits.find(s=>s.id===splitId);
   const existing=STATE.workouts.find(w=>w.date===todayStr && w.splitId===splitId);
-  if(existing){ sessionData={...existing}; }
+  if(existing){ sessionData={...existing, exercises: existing.exercises.map(e=>({...e, sets: e.sets.map(s=>({...s}))}))}; }
   else {
     sessionData={id:'w'+Date.now(),date:todayStr,dow:todayDow,splitId,splitName:sp.name,
       splitType:sp.type,startTime:Date.now(),
@@ -631,7 +802,7 @@ function renderSession(){
         <div style="flex:1"><div style="font-size:14px;font-weight:500">${ex.name}${histBadge}</div>
           <div style="font-size:11px;color:var(--muted)">${ex.muscle}</div></div>
         <div class="ex-vol" id="exvol-${ei}">${vol>0?vol.toLocaleString()+' kg':''}</div>
-        <button class="btn-ghost" style="font-size:11px;padding:2px 8px;margin-left:4px;border:1px solid var(--border);border-radius:6px;color:var(--muted)" onclick="event.stopPropagation();openSwapExercise(${ei})" title="Cambiar ejercicio">⇄</button>
+        <button class="swap-btn" onclick="event.stopPropagation();openSwapExercise(${ei})" title="Cambiar ejercicio">⇄ cambiar</button>
         <span style="color:var(--muted);margin-left:6px;font-size:12px">▾</span>
       </div>
       <div class="ex-card-body${ei===0?' open':''}" id="exb-${ei}">
@@ -843,28 +1014,37 @@ function openSwapExercise(ei){
 function filterSwapList(){
   const q = document.getElementById('swap-search').value.toLowerCase();
   const list = document.getElementById('swap-list');
-  const allEx = Object.entries(STATE.exercises);
-  const rows = allEx.flatMap(([mg, exs])=>
-    exs.filter(e=>e.name.toLowerCase().includes(q))
-       .map(e=>({...e, mg}))
+  const rows = Object.entries(STATE.exercises).flatMap(([mg, exs])=>
+    exs.filter(e => !q || e.name.toLowerCase().includes(q) || mg.toLowerCase().includes(q))
+       .map(e => ({...e, mg}))
   );
   if(!rows.length){
     list.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">Sin resultados</div>';
     return;
   }
-  list.innerHTML = rows.map(e=>{
-    const isCur = sessionData.exercises[swapTargetEi]?.name === e.name;
-    return `<div onclick="${isCur?'':'confirmSwap(\''+e.name.replace(/'/g,"\\'")+"','"+e.mg+"')"}"
-      style="padding:11px 16px;display:flex;align-items:center;gap:10px;cursor:${isCur?'default':'pointer'};
-             background:${isCur?'var(--surface2)':'transparent'};border-bottom:1px solid var(--border);opacity:${isCur?0.5:1}"
-      onmouseenter="if(!${isCur}) this.style.background='var(--surface2)'"
-      onmouseleave="if(!${isCur}) this.style.background='transparent'">
-      <div style="flex:1">
-        <div style="font-size:13px;font-weight:500">${e.name}${isCur?' <span style="font-size:10px;color:var(--muted)">(actual)</span>':''}</div>
-        <div style="font-size:11px;color:var(--muted)">${e.mg}</div>
-      </div>
-    </div>`;
-  }).join('');
+  // Group by muscle group
+  const grouped = {};
+  rows.forEach(e => { grouped[e.mg] = grouped[e.mg]||[]; grouped[e.mg].push(e); });
+  const curName = sessionData.exercises[swapTargetEi]?.name;
+  list.innerHTML = Object.entries(grouped).map(([mg, exs])=>`
+    <div style="padding:6px 16px 2px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">${mg}</div>
+    ${exs.map(e=>{
+      const isCur = curName === e.name;
+      return`<div onclick="${isCur?'':'confirmSwap(\''+e.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+"','"+e.mg.replace(/'/g,"\\'")+'\')' }"
+        style="padding:10px 16px;display:flex;align-items:center;gap:10px;
+               cursor:${isCur?'default':'pointer'};
+               border-bottom:1px solid var(--border);
+               background:${isCur?'var(--surface2)':'transparent'};
+               opacity:${isCur?.6:1}"
+        onmouseenter="${isCur?'':'this.style.background=\'var(--surface2)\''}"
+        onmouseleave="${isCur?'':'this.style.background=\'transparent\''}">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:500">${e.name}</div>
+        </div>
+        ${isCur?'<span style="font-size:10px;color:var(--accent);border:1px solid rgba(200,242,94,.3);padding:2px 8px;border-radius:10px">actual</span>':'<span style="font-size:11px;color:var(--muted)">→ usar</span>'}
+      </div>`;
+    }).join('')}
+  `).join('');
 }
 
 function confirmSwap(name, muscle){
@@ -876,6 +1056,7 @@ function confirmSwap(name, muscle){
   closeSwap();
   renderSession();
   autoSave();
+  toast('Ejercicio cambiado ✓');
 }
 
 function closeSwap(){
@@ -884,10 +1065,15 @@ function closeSwap(){
 }
 
 // ══════════════════════ INIT ══════════════════════
-document.getElementById('today-label').textContent=DAYS_L[todayDow];
+document.getElementById('today-label').textContent = DAYS_L[todayDow];
 updateTimerDisplay();
 
-// Check session before loading app
+// PIN input: submit on Enter
+document.getElementById('pin-input').addEventListener('keydown', e => {
+  if(e.key === 'Enter') submitPin();
+});
+
+// Check existing session on load
 (async ()=>{
   try {
     const r = await fetch('/api/auth/me', {credentials:'include'});
@@ -895,34 +1081,16 @@ updateTimerDisplay();
       const me = await r.json();
       if(me && !me.error){
         STATE.currentUser = me;
+        document.getElementById('main-nav').style.display = 'flex';
         await loadAll();
         return;
       }
     }
   } catch(e){}
-  // No session — show profile picker
+  // No valid session — show profile picker
   showProfileScreen();
 })();
 </script>
-<!-- MODAL: SWAP EXERCISE -->
-<div id="swap-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:400;align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeSwap()">
-  <div style="background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:480px;max-height:80vh;display:flex;flex-direction:column">
-    <div style="padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700">Cambiar ejercicio</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px" id="swap-current-label"></div>
-      </div>
-      <button class="btn-ghost" style="font-size:18px;padding:4px 10px" onclick="closeSwap()">×</button>
-    </div>
-    <div style="padding:10px 14px;border-bottom:1px solid var(--border)">
-      <input class="form-input" id="swap-search" placeholder="Buscar ejercicio…" oninput="filterSwapList()" style="width:100%">
-    </div>
-    <div style="overflow-y:auto;padding:8px 0" id="swap-list"></div>
-  </div>
-</div>
-
 </body>
 </html>
-
-
 
