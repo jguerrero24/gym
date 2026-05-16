@@ -539,11 +539,54 @@ function renderHomeView(){
     return;
   }
   if(!sp){
-    tb.innerHTML=`<div class="card" style="text-align:center;padding:24px"><div style="font-size:13px;color:var(--muted)">Sin split asignado para hoy.</div>
-    <button class="btn btn-outline" style="margin-top:12px;font-size:13px" onclick="navTo('view-splits',document.querySelectorAll('.nav-btn')[1])">Configurar splits →</button></div>`;
+    const allSplits = STATE.splits;
+    if(!allSplits.length){
+      tb.innerHTML=`<div class="card" style="text-align:center;padding:24px">
+        <div style="font-size:13px;color:var(--muted)">Sin splits creados aún.</div>
+        <button class="btn btn-outline" style="margin-top:12px;font-size:13px" onclick="navTo('view-splits',document.querySelectorAll('.nav-btn')[1])">Crear split →</button>
+      </div>`;
+    } else {
+      tb.innerHTML=`<div class="card">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Sin split asignado para hoy. ¿Qué quieres hacer?</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          ${allSplits.map(s=>`
+            <button onclick="startSession('${s.id}')"
+              style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-sm);
+                     background:var(--surface2);border:1px solid var(--border);color:var(--text);
+                     font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;text-align:left;transition:all .15s"
+              onmouseenter="this.style.borderColor='var(--accent)'"
+              onmouseleave="this.style.borderColor='var(--border)'">
+              <span class="tag ${TYPE_TC[s.type]||'tag-full'}" style="margin:0">${TYPE_LABELS[s.type]||s.type}</span>
+              <span style="flex:1;font-weight:500">${s.name}</span>
+              <span style="color:var(--muted);font-size:12px">${s.exercises.length} ejerc →</span>
+            </button>`).join('')}
+        </div>
+        <div class="divider"></div>
+        <button class="btn-ghost btn-block" style="font-size:12px" onclick="navTo('view-splits',document.querySelectorAll('.nav-btn')[1])">Configurar plan semanal →</button>
+      </div>`;
+    }
     return;
   }
   const muscles=[...new Set(sp.exercises.map(e=>e.muscle))];
+  // Build "other splits" for the override picker (exclude today's assigned one)
+  const otherSplits = STATE.splits.filter(s => s.id !== sp.id);
+  const otherSplitsHTML = otherSplits.length ? `
+    <div style="margin-top:14px">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">
+        O elige otro split para hoy:
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        ${otherSplits.map(s=>`
+          <button onclick="startSession('${s.id}')"
+            style="padding:6px 14px;border-radius:20px;background:var(--surface2);border:1px solid var(--border);
+                   color:var(--text);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s"
+            onmouseenter="this.style.borderColor='var(--accent2)';this.style.color='var(--accent2)'"
+            onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--text)'">
+            ${s.name}
+          </button>`).join('')}
+      </div>
+    </div>` : '';
+
   tb.innerHTML=`
     <div class="sec-label">Hoy — ${DAYS_L[todayDow]}</div>
     <div class="card">
@@ -564,6 +607,7 @@ function renderHomeView(){
       <button class="btn btn-accent btn-block" style="margin-top:14px" onclick="startSession('${sp.id}')">
         ${existing?'Continuar →':'Iniciar entrenamiento →'}
       </button>
+      ${otherSplitsHTML}
     </div>`;
 }
 
@@ -765,6 +809,29 @@ function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 // ══════════════════════ SESSION ══════════════════════
 let sessionClockInterval=null;
 
+/**
+ * Look up the most recent completed sets for a given exercise name.
+ * Returns array of {kg, reps, rir, done:false} or null if no history.
+ */
+function getLastExerciseData(exerciseName){
+  // STATE.workouts is sorted date desc
+  for(const w of STATE.workouts){
+    const ex = w.exercises.find(e => e.name === exerciseName);
+    if(ex){
+      const doneSets = ex.sets.filter(s => s.done);
+      if(doneSets.length > 0){
+        return doneSets.map(s => ({
+          kg:   s.kg   || '',
+          reps: s.reps || '',
+          rir:  s.rir  || '2',
+          done: false   // reset so user has to re-confirm each set
+        }));
+      }
+    }
+  }
+  return null;
+}
+
 async function startSession(splitId){
   const sp=STATE.splits.find(s=>s.id===splitId);
   const existing=STATE.workouts.find(w=>w.date===todayStr && w.splitId===splitId);
@@ -772,7 +839,15 @@ async function startSession(splitId){
   else {
     sessionData={id:'w'+Date.now(),date:todayStr,dow:todayDow,splitId,splitName:sp.name,
       splitType:sp.type,startTime:Date.now(),
-      exercises:sp.exercises.map(e=>({name:e.name,muscle:e.muscle,sets:[{kg:'',reps:'',rir:'2',done:false}]}))};
+      exercises:sp.exercises.map(e=>{
+        const lastSets = getLastExerciseData(e.name);
+        return {
+          name:    e.name,
+          muscle:  e.muscle,
+          sets:    lastSets || [{kg:'',reps:'',rir:'2',done:false}],
+          _fromHistory: !!lastSets
+        };
+      })};
   }
   document.getElementById('session-title').textContent=sp.name;
   renderSession();
@@ -795,7 +870,7 @@ function startSessionClock(){
 function renderSession(){
   document.getElementById('session-exercises').innerHTML=sessionData.exercises.map((ex,ei)=>{
     const vol=calcVol(ex);
-    const histBadge=ex._fromHistory?`<span style="font-size:9px;background:rgba(200,242,94,0.12);color:var(--accent);border:1px solid rgba(200,242,94,0.3);border-radius:10px;padding:1px 7px;margin-left:4px;font-family:'DM Mono',monospace">↩ último</span>`:'';
+    const histBadge=ex._fromHistory?`<span style="font-size:9px;background:rgba(124,109,250,0.15);color:var(--accent2);border:1px solid rgba(124,109,250,0.3);border-radius:10px;padding:1px 7px;margin-left:4px;font-family:'DM Mono',monospace" title="Pesos del último entrenamiento">↩ último</span>`:'';
     return`<div class="ex-card" id="exc-${ei}">
       <div class="ex-card-header" onclick="toggleExCard(${ei})">
         <div class="ex-order">${ei+1}</div>
@@ -1093,4 +1168,3 @@ document.getElementById('pin-input').addEventListener('keydown', e => {
 </script>
 </body>
 </html>
-
