@@ -499,6 +499,7 @@ async function loadAll(){
     renderHomeView();
   } catch(e){
     console.error('loadAll error:', e);
+    toast('Error al cargar datos. Verifica conexión.');
   }
 }
 
@@ -513,11 +514,13 @@ function navTo(id, btn){
   if(btn) btn.classList.add('active');
   showLoading();
   setTimeout(() => {
-    if(id==='view-splits') renderSplitsView();
-    if(id==='view-exercises') renderExerciseCatalog();
-    if(id==='view-history') renderHistoryView();
-    if(id==='view-progress') renderProgressView();
-    if(id==='view-home') renderHomeView();
+    try {
+      if(id==='view-splits') renderSplitsView();
+      if(id==='view-exercises') renderExerciseCatalog();
+      if(id==='view-history') renderHistoryView();
+      if(id==='view-progress') renderProgressView();
+      if(id==='view-home') renderHomeView();
+    } catch(e){ console.error('Error rendering', id, e); }
     hideLoading();
   }, 50);
 }
@@ -716,8 +719,13 @@ const MUSCLE_FILTER = {
 };
 function renderEditorPicker(){
   const allowed = MUSCLE_FILTER[splitType];
-  document.getElementById('editor-ex-picker').innerHTML=Object.entries(STATE.exercises)
-    .filter(([mg]) => !allowed || allowed.includes(mg))
+  const exObj = STATE.exercises || {};
+  const entries = Object.entries(exObj).filter(([mg]) => !allowed || allowed.includes(mg));
+  if(!entries.length){
+    document.getElementById('editor-ex-picker').innerHTML=`<div style="font-size:13px;color:var(--muted);text-align:center;padding:12px">No hay ejercicios disponibles para este tipo.</div>`;
+    return;
+  }
+  document.getElementById('editor-ex-picker').innerHTML=entries
     .map(([mg,exs])=>`
     <div style="margin-bottom:14px">
       <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">${mg}</div>
@@ -768,8 +776,15 @@ async function saveSplit(){
 function renderExerciseCatalog(){
   const q=(document.getElementById('ex-search').value||'').toLowerCase();
   const cat=document.getElementById('exercise-catalog');
-  cat.innerHTML=Object.entries(STATE.exercises).map(([mg,exs])=>{
-    const filtered=exs.filter(e=>e.name.toLowerCase().includes(q)||mg.toLowerCase().includes(q));
+  const exObj = STATE.exercises || {};
+  const entries = Object.entries(exObj);
+  if(!entries.length || !entries.some(([,exs])=>exs.length)){
+    cat.innerHTML=`<div class="empty-state"><div class="empty-icon">🏋️</div><p>No hay ejercicios cargados.</p></div>`;
+    return;
+  }
+  cat.innerHTML=entries.map(([mg,exs])=>{
+    if(!exs || !exs.length) return '';
+    const filtered=exs.filter(e=>e && e.name && (e.name.toLowerCase().includes(q)||mg.toLowerCase().includes(q)));
     if(!filtered.length) return '';
     return`<div style="margin-bottom:16px">
       <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">${mg}</div>
