@@ -4,9 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GymLog</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e0e11;--surface:#16161a;--surface2:#1e1e24;--border:#2a2a33;--accent:#c8f25e;--accent2:#7c6dfa;--accent3:#ff6b6b;--text:#f0f0f5;--muted:#6b6b80;--muted2:#3a3a48;--push:#ff6b6b;--pull:#7c6dfa;--legs:#f5a623;--core:#4ecdc4;--full:#c8f25e;--radius:14px;--radius-sm:8px}
+:root{--bg:#0e0e11;--surface:#16161a;--surface2:#1e1e24;--border:#2a2a33;--accent:#c8f25e;--accent2:#7c6dfa;--accent3:#ff6b6b;--text:#f0f0f5;--muted:#6b6b80;--muted2:#3a3a48;--push:#ff6b6b;--pull:#7c6dfa;--legs:#f5a623;--core:#4ecdc4;--full:#c8f25e;--machine-green:#4CAF50;--machine-yellow:#FFC107;--machine-purple:#9C27B0;--radius:14px;--radius-sm:8px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden}
 h1,h2,h3{font-family:'Syne',sans-serif}
@@ -100,7 +103,7 @@ select.form-input option{background:var(--surface2)}
 .stat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
 .empty-state{text-align:center;padding:48px 20px;color:var(--muted)}
 .empty-icon{font-size:40px;margin-bottom:12px}
-.drag-handle{color:var(--muted);cursor:grab;padding:4px;font-size:16px;user-select:none}
+
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none;align-items:flex-end}
 .modal-overlay.open{display:flex}
@@ -335,6 +338,11 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 </div>
 
 <div class="toast" id="toast"></div>
+<div id="loading-overlay" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:300;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+  <div style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite"></div>
+  <div style="font-size:13px;color:var(--muted)">Cargando…</div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
 <script>
 // ══════════════════════ API HELPERS ══════════════════════
@@ -495,16 +503,23 @@ async function loadAll(){
 }
 
 // ══════════════════════ NAV ══════════════════════
+function showLoading(){ document.getElementById('loading-overlay').style.display='flex'; }
+function hideLoading(){ document.getElementById('loading-overlay').style.display='none'; }
+
 function navTo(id, btn){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
-  if(id==='view-splits') renderSplitsView();
-  if(id==='view-exercises') renderExerciseCatalog();
-  if(id==='view-history') renderHistoryView();
-  if(id==='view-progress') renderProgressView();
-  if(id==='view-home') renderHomeView();
+  showLoading();
+  setTimeout(() => {
+    if(id==='view-splits') renderSplitsView();
+    if(id==='view-exercises') renderExerciseCatalog();
+    if(id==='view-history') renderHistoryView();
+    if(id==='view-progress') renderProgressView();
+    if(id==='view-home') renderHomeView();
+    hideLoading();
+  }, 50);
 }
 function showView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -690,8 +705,20 @@ function selType(el){
   document.querySelectorAll('#type-pills .pill').forEach(p=>p.classList.remove('sel'));
   el.classList.add('sel'); splitType=el.dataset.type;
 }
+const MUSCLE_FILTER = {
+  push:    ['Pectoral','Hombros','Tríceps'],
+  pull:    ['Dorsal','Bíceps','Trapecio'],
+  legs:    ['Cuádriceps','Isquiotibiales','Glúteos','Pantorrillas'],
+  core:    ['Abdomen'],
+  upper:   ['Pectoral','Hombros','Tríceps','Dorsal','Bíceps','Trapecio'],
+  lower:   ['Cuádriceps','Isquiotibiales','Glúteos','Pantorrillas','Abdomen'],
+  full:    null
+};
 function renderEditorPicker(){
-  document.getElementById('editor-ex-picker').innerHTML=Object.entries(STATE.exercises).map(([mg,exs])=>`
+  const allowed = MUSCLE_FILTER[splitType];
+  document.getElementById('editor-ex-picker').innerHTML=Object.entries(STATE.exercises)
+    .filter(([mg]) => !allowed || allowed.includes(mg))
+    .map(([mg,exs])=>`
     <div style="margin-bottom:14px">
       <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">${mg}</div>
       <div>${exs.map(ex=>{
@@ -714,7 +741,6 @@ function renderEditorOrder(){
   }
   ol.innerHTML=selectedExercises.map((e,i)=>`
     <div class="card" style="display:flex;align-items:center;gap:8px;padding:10px 12px;margin-bottom:6px">
-      <span class="drag-handle">⠿</span>
       <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);min-width:16px">${i+1}</span>
       <div style="flex:1"><div style="font-size:13px;font-weight:500">${e.name}</div>
         <div style="font-size:11px;color:var(--muted)">${e.muscle}</div></div>
@@ -813,20 +839,20 @@ let sessionClockInterval=null;
  * Look up the most recent completed sets for a given exercise name.
  * Returns array of {kg, reps, rir, done:false} or null if no history.
  */
-function getLastExerciseData(exerciseName){
-  // STATE.workouts is sorted date desc
+function getLastExerciseData(exerciseName, machine){
+  machine = machine || 'green';
   for(const w of STATE.workouts){
     const ex = w.exercises.find(e => e.name === exerciseName);
-    if(ex){
-      const doneSets = ex.sets.filter(s => s.done);
-      if(doneSets.length > 0){
-        return doneSets.map(s => ({
-          kg:   s.kg   || '',
-          reps: s.reps || '',
-          rir:  s.rir  || '2',
-          done: false   // reset so user has to re-confirm each set
-        }));
-      }
+    if(!ex) continue;
+    const doneSets = ex.sets.filter(s => s.done && (s.machine||'green') === machine);
+    if(doneSets.length > 0){
+      return doneSets.map(s => ({
+        kg:   s.kg   || '',
+        reps: s.reps || '',
+        rir:  s.rir  || '2',
+        machine: machine,
+        done: false
+      }));
     }
   }
   return null;
@@ -835,16 +861,19 @@ function getLastExerciseData(exerciseName){
 async function startSession(splitId){
   const sp=STATE.splits.find(s=>s.id===splitId);
   const existing=STATE.workouts.find(w=>w.date===todayStr && w.splitId===splitId);
-  if(existing){ sessionData={...existing, exercises: existing.exercises.map(e=>({...e, sets: e.sets.map(s=>({...s}))}))}; }
-  else {
+  if(existing){
+    sessionData={...existing, exercises: existing.exercises.map(e=>({...e, sets: e.sets.map(s=>({...s}))}))};
+    sessionData.exercises.forEach(e => { if(!e.machine) e.machine = 'green'; });
+  } else {
     sessionData={id:'w'+Date.now(),date:todayStr,dow:todayDow,splitId,splitName:sp.name,
       splitType:sp.type,startTime:Date.now(),
       exercises:sp.exercises.map(e=>{
-        const lastSets = getLastExerciseData(e.name);
+        const lastSets = getLastExerciseData(e.name, 'green');
         return {
           name:    e.name,
           muscle:  e.muscle,
-          sets:    lastSets || [{kg:'',reps:'',rir:'2',done:false}],
+          machine: 'green',
+          sets:    lastSets || [{kg:'',reps:'',rir:'2',machine:'green',done:false}],
           _fromHistory: !!lastSets
         };
       })};
@@ -867,9 +896,16 @@ function startSessionClock(){
   },1000);
 }
 
+const MACHINES = [
+  { key: 'green',  color: 'var(--machine-green)',  label: 'Óptima' },
+  { key: 'yellow', color: 'var(--machine-yellow)', label: 'Media' },
+  { key: 'purple', color: 'var(--machine-purple)', label: 'Básica' },
+];
+
 function renderSession(){
   document.getElementById('session-exercises').innerHTML=sessionData.exercises.map((ex,ei)=>{
     const vol=calcVol(ex);
+    const curMachine = ex.machine || 'green';
     const histBadge=ex._fromHistory?`<span style="font-size:9px;background:rgba(124,109,250,0.15);color:var(--accent2);border:1px solid rgba(124,109,250,0.3);border-radius:10px;padding:1px 7px;margin-left:4px;font-family:'DM Mono',monospace" title="Pesos del último entrenamiento">↩ último</span>`:'';
     return`<div class="ex-card" id="exc-${ei}">
       <div class="ex-card-header" onclick="toggleExCard(${ei})">
@@ -877,12 +913,23 @@ function renderSession(){
         <div style="flex:1"><div style="font-size:14px;font-weight:500">${ex.name}${histBadge}</div>
           <div style="font-size:11px;color:var(--muted)">${ex.muscle}</div></div>
         <div class="ex-vol" id="exvol-${ei}">${vol>0?vol.toLocaleString()+' kg':''}</div>
-        <button class="swap-btn" onclick="event.stopPropagation();openSwapExercise(${ei})" title="Cambiar ejercicio">⇄ cambiar</button>
-        <span style="color:var(--muted);margin-left:6px;font-size:12px">▾</span>
+        <button class="btn-icon" style="width:24px;height:24px;font-size:10px" onclick="event.stopPropagation();sessionMoveUp(${ei})" ${ei===0?'disabled style="opacity:.3"':''}>↑</button>
+        <button class="btn-icon" style="width:24px;height:24px;font-size:10px" onclick="event.stopPropagation();sessionMoveDown(${ei})" ${ei===sessionData.exercises.length-1?'disabled style="opacity:.3"':''}>↓</button>
+        <span style="color:var(--muted);margin-left:2px;font-size:12px">▾</span>
       </div>
       <div class="ex-card-body${ei===0?' open':''}" id="exb-${ei}">
+        <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">
+          <span style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px">Máquina</span>
+          ${MACHINES.map(m => `
+            <button onclick="setExMachine(${ei},'${m.key}')"
+              style="width:28px;height:28px;border-radius:50%;border:2px solid ${curMachine===m.key?m.color:'var(--border)'};
+                     background:${curMachine===m.key?m.color:'var(--surface2)'};cursor:pointer;
+                     transition:all .15s;flex-shrink:0"
+              title="${m.label}"></button>
+          `).join('')}
+        </div>
         <table class="sets-table">
-          <thead><tr><th></th><th>Kg</th><th>Reps</th><th>RIR</th><th>✓</th></tr></thead>
+          <thead><tr><th></th><th>Kg</th><th>Reps</th><th>RIR</th><th>Máq</th><th>✓</th></tr></thead>
           <tbody id="stb-${ei}">${renderSetsHTML(ex.sets,ei)}</tbody>
         </table>
         <div style="display:flex;gap:8px;margin-top:8px">
@@ -901,8 +948,50 @@ function renderSetsHTML(sets,ei){
       <td><input class="set-inp" type="number" min="0" step="0.5" value="${s.kg}" placeholder="kg" style="width:52px" onchange="updateSet(${ei},${si},'kg',this.value)"></td>
       <td><input class="set-inp" type="number" min="1" value="${s.reps}" placeholder="0" style="width:46px" onchange="updateSet(${ei},${si},'reps',this.value)"></td>
       <td><input class="set-inp" type="number" min="0" max="5" value="${s.rir}" style="width:40px" onchange="updateSet(${ei},${si},'rir',this.value)"></td>
+      <td><span style="display:inline-block;width:16px;height:16px;border-radius:50%;background:${getMachineColor(s.machine)};border:1px solid var(--border);vertical-align:middle"></span></td>
       <td><button class="set-done${s.done?' active':''}" onclick="toggleSetDone(${ei},${si})">✓</button></td>
     </tr>`).join('');
+}
+
+function getMachineColor(machine){
+  if(!machine) return 'var(--surface2)';
+  const m = MACHINES.find(x => x.key === machine);
+  return m ? m.color : 'var(--surface2)';
+}
+
+function setExMachine(ei, machine){
+  const ex = sessionData.exercises[ei];
+  ex.machine = machine;
+  loadMachineHistory(ei);
+}
+
+function loadMachineHistory(ei){
+  const ex = sessionData.exercises[ei];
+  const machine = ex.machine || 'green';
+  // Search last workout with this exercise + machine combo
+  for(const w of STATE.workouts){
+    const wex = w.exercises.find(e => e.name === ex.name);
+    if(!wex) continue;
+    const doneSets = wex.sets.filter(s => s.done && (s.machine||'green') === machine);
+    if(doneSets.length > 0){
+      ex.sets = doneSets.map(s => ({
+        kg: s.kg || '', reps: s.reps || '', rir: s.rir || '2',
+        machine: machine, done: false
+      }));
+      ex._fromHistory = true;
+      renderSession();
+      autoSave(true);
+      return;
+    }
+  }
+  // No history for this machine — reset sets, keep machine
+  if(ex.sets.length === 1 && !ex.sets[0].kg && !ex.sets[0].reps){
+    ex.sets[0].machine = machine;
+  } else {
+    ex.sets.forEach(s => s.machine = machine);
+  }
+  ex._fromHistory = false;
+  renderSession();
 }
 function toggleExCard(ei){ document.getElementById('exb-'+ei).classList.toggle('open'); }
 function updateSet(ei,si,field,val){ sessionData.exercises[ei].sets[si][field]=val; updateVolDisplay(ei); autoSave(); }
@@ -916,38 +1005,58 @@ function toggleSetDone(ei,si){
   if(sessionData.exercises[ei].sets[si].done) startRestTimer();
 }
 function addSet(ei){
-  const prev=sessionData.exercises[ei].sets.slice(-1)[0]||{kg:'',reps:'',rir:'2'};
-  sessionData.exercises[ei].sets.push({kg:prev.kg,reps:prev.reps,rir:prev.rir,done:false});
+  const ex=sessionData.exercises[ei];
+  const prev=ex.sets.slice(-1)[0]||{kg:'',reps:'',rir:'2',machine:ex.machine||'green'};
+  ex.sets.push({kg:prev.kg,reps:prev.reps,rir:prev.rir,machine:ex.machine||'green',done:false});
   const tb=document.getElementById('stb-'+ei);
-  if(tb) tb.innerHTML=renderSetsHTML(sessionData.exercises[ei].sets,ei);
+  if(tb) tb.innerHTML=renderSetsHTML(ex.sets,ei);
   autoSave();
 }
 function calcVol(ex){ return ex.sets.reduce((a,s)=>s.done?(a+(parseFloat(s.kg)||0)*(parseFloat(s.reps)||0)):a,0); }
 function updateVolDisplay(ei){ const v=calcVol(sessionData.exercises[ei]); const el=document.getElementById('exvol-'+ei); if(el) el.textContent=v>0?v.toLocaleString()+' kg':''; }
 
-async function autoSave(){
+let _saveTimer = null;
+async function _doSave(){
+  try {
+    await api.post('/api/workouts', sessionData);
+    const idx=STATE.workouts.findIndex(w=>w.id===sessionData.id);
+    if(idx>=0) STATE.workouts[idx]=sessionData; else STATE.workouts.unshift(sessionData);
+  } catch(e){ /* silent: will retry on next change */ }
+}
+function autoSave(flush){
   if(!sessionData) return;
-  await api.post('/api/workouts', sessionData);
-  const idx=STATE.workouts.findIndex(w=>w.id===sessionData.id);
-  if(idx>=0) STATE.workouts[idx]=sessionData; else STATE.workouts.unshift(sessionData);
+  if(_saveTimer) clearTimeout(_saveTimer);
+  if(flush){ _doSave(); return; }
+  _saveTimer = setTimeout(_doSave, 1500);
 }
 
 async function finishSession(){
-  await autoSave();
-  clearInterval(sessionClockInterval);
-  stopTimer();
-  document.getElementById('timer-panel').classList.remove('open');
-  document.getElementById('main-nav').style.display='flex';
+  await autoSave(true);
+  endSessionUI();
   toast('¡Entrenamiento guardado! 💪');
-  navTo('view-home', document.querySelector('.nav-btn'));
 }
 async function confirmEndSession(){
-  await autoSave();
+  await autoSave(true);
+  endSessionUI();
+}
+function endSessionUI(){
   clearInterval(sessionClockInterval);
   stopTimer();
   document.getElementById('timer-panel').classList.remove('open');
   document.getElementById('main-nav').style.display='flex';
   navTo('view-home', document.querySelector('.nav-btn'));
+}
+function sessionMoveUp(ei){
+  if(ei===0) return;
+  [sessionData.exercises[ei-1], sessionData.exercises[ei]] = [sessionData.exercises[ei], sessionData.exercises[ei-1]];
+  renderSession();
+  autoSave();
+}
+function sessionMoveDown(ei){
+  if(ei===sessionData.exercises.length-1) return;
+  [sessionData.exercises[ei+1], sessionData.exercises[ei]] = [sessionData.exercises[ei], sessionData.exercises[ei+1]];
+  renderSession();
+  autoSave();
 }
 
 // ══════════════════════ REST TIMER ══════════════════════
@@ -995,6 +1104,10 @@ function renderHistoryView(){
   }
   const tVol=STATE.workouts.reduce((a,w)=>a+w.exercises.reduce((b,e)=>b+calcVol(e),0),0);
   hc.innerHTML=`
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <button class="btn btn-outline" style="flex:1;font-size:12px;padding:7px" onclick="exportData('csv')">📥 CSV</button>
+      <button class="btn btn-outline" style="flex:1;font-size:12px;padding:7px" onclick="exportData('json')">📥 JSON</button>
+    </div>
     <div class="stat-grid">
       <div class="stat-card"><div class="stat-val">${STATE.workouts.length}</div><div class="stat-lbl">Sesiones</div></div>
       <div class="stat-card"><div class="stat-val">${(tVol/1000).toFixed(1)}t</div><div class="stat-lbl">Vol total</div></div>
@@ -1006,21 +1119,69 @@ function renderHistoryView(){
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div><div style="font-size:15px;font-weight:600">${w.splitName||'Entrenamiento'}</div>
           <div style="font-size:12px;color:var(--muted);margin-top:2px">${w.date} · ${w.exercises.length} ejerc · ${done} series</div></div>
-        <span style="font-size:12px;background:rgba(200,242,94,.08);color:var(--accent);padding:3px 10px;border-radius:20px;border:1px solid rgba(200,242,94,.2)">${vol.toLocaleString()} kg</span>
-      </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:12px;background:rgba(200,242,94,.08);color:var(--accent);padding:3px 10px;border-radius:20px;border:1px solid rgba(200,242,94,.2)">${vol.toLocaleString()} kg</span>
+          <button class="btn-icon" style="color:var(--accent3);border-color:rgba(255,107,107,.3);width:26px;height:26px;font-size:12px" onclick="event.stopPropagation();deleteWorkout('${w.id}',${wi})">×</button>
+        </div>
       <div id="hd-${wi}" style="display:none;margin-top:10px;border-top:1px solid var(--border);padding-top:10px">
         ${w.exercises.map(e=>{
           const ds=e.sets.filter(s=>s.done);
           return`<div style="padding:5px 0;border-bottom:1px solid var(--border)">
             <div style="display:flex;justify-content:space-between"><span style="font-size:13px">${e.name}</span>
               <span style="font-size:11px;color:var(--muted)">${calcVol(e).toLocaleString()} kg</span></div>
-            ${ds.length?`<div style="margin-top:4px">${ds.map(s=>`<span style="font-size:10px;background:var(--surface2);padding:2px 7px;border-radius:4px;margin-right:3px;font-family:'DM Mono',monospace">${s.kg}kg×${s.reps} R${s.rir}</span>`).join('')}</div>`:''}
+            ${ds.length?`<div style="margin-top:4px">${ds.map(s=>`<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;background:var(--surface2);padding:2px 7px;border-radius:4px;margin-right:3px;font-family:'DM Mono',monospace"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${getMachineColor(s.machine)}"></span>${s.kg}kg×${s.reps} R${s.rir}</span>`).join('')}</div>`:''}
           </div>`;}).join('')}
       </div>
     </div>`;
   }).join('');
 }
 function toggleHD(i){ const d=document.getElementById('hd-'+i); if(d) d.style.display=d.style.display==='none'?'block':'none'; }
+function exportData(format){
+  const data = STATE.workouts.map(w => ({
+    date: w.date,
+    split: w.splitName || '',
+    exercises: w.exercises.map(e => ({
+      name: e.name,
+      machine: e.sets[0]?.machine || '',
+      sets: e.sets.filter(s=>s.done).map(s => ({
+        kg: s.kg, reps: s.reps, rir: s.rir, machine: s.machine || ''
+      }))
+    }))
+  }));
+  if(format === 'json'){
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='gymlog-export.json'; a.click();
+    URL.revokeObjectURL(url);
+  } else {
+    const rows = [['Fecha','Split','Ejercicio','Máquina','Kg','Reps','RIR']];
+    data.forEach(w => {
+      w.exercises.forEach(e => {
+        e.sets.forEach(s => {
+          rows.push([w.date, w.split, e.name, s.machine, s.kg, s.reps, s.rir]);
+        });
+      });
+    });
+    const csv = rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='gymlog-export.csv'; a.click();
+    URL.revokeObjectURL(url);
+  }
+  toast(`Exportado como ${format.toUpperCase()} ✓`);
+}
+
+async function deleteWorkout(id, idx){
+  if(!confirm('¿Eliminar este entrenamiento?')) return;
+  try {
+    await api.del(`/api/workouts/${id}`);
+    STATE.workouts.splice(idx,1);
+    renderHistoryView();
+    toast('Entrenamiento eliminado');
+  } catch(e){
+    toast('Error al eliminar');
+  }
+}
 
 // ══════════════════════ PROGRESS ══════════════════════
 function populateProgSelect(){
@@ -1068,7 +1229,7 @@ function renderProgressView(){
     <div class="sec-label" style="margin-top:12px">Por sesión</div>
     ${entries.map(e=>`<div class="card" style="margin-bottom:8px">
       <div style="font-size:11px;color:var(--muted);margin-bottom:6px">${e.date}</div>
-      ${e.sets.map(s=>`<span style="font-size:11px;background:var(--surface2);padding:3px 8px;border-radius:4px;margin:2px;display:inline-block;font-family:'DM Mono',monospace">${s.kg}kg × ${s.reps}r  RIR${s.rir}</span>`).join('')}
+      ${e.sets.map(s=>`<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;background:var(--surface2);padding:3px 8px;border-radius:4px;margin:2px;font-family:'DM Mono',monospace"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${getMachineColor(s.machine)}"></span>${s.kg}kg × ${s.reps}r  RIR${s.rir}</span>`).join('')}
     </div>`).join('')}`;
 }
 
@@ -1110,7 +1271,7 @@ function filterSwapList(){
                cursor:${isCur?'default':'pointer'};
                border-bottom:1px solid var(--border);
                background:${isCur?'var(--surface2)':'transparent'};
-               opacity:${isCur?.6:1}"
+               opacity:${isCur?0.6:1}"
         onmouseenter="${isCur?'':'this.style.background=\'var(--surface2)\''}"
         onmouseleave="${isCur?'':'this.style.background=\'transparent\''}">
         <div style="flex:1">
@@ -1165,6 +1326,11 @@ document.getElementById('pin-input').addEventListener('keydown', e => {
   // No valid session — show profile picker
   showProfileScreen();
 })();
+
+// Register Service Worker
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js');
+}
 </script>
 </body>
 </html>
