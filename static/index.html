@@ -13,8 +13,8 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden}
 h1,h2,h3{font-family:'Syne',sans-serif}
-.app{display:flex;flex-direction:column;height:100vh;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
-.view{display:none;flex-direction:column;height:100%;overflow:hidden;animation:fadeIn .18s ease}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:480px;margin:0 auto;position:relative;overflow-x:hidden}
+.view{display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden;animation:fadeIn .18s ease}
 .view.active{display:flex}
 @keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .scroll-area{flex:1;overflow-y:auto;padding:16px 16px 100px;scrollbar-width:none}
@@ -1346,6 +1346,18 @@ document.getElementById('pin-input').addEventListener('keydown', e => {
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/sw.js');
 }
+
+// Fix viewport height for mobile browsers that don't support dvh
+(function(){
+  const app = document.querySelector('.app');
+  function fixHeight(){
+    app.style.minHeight = window.innerHeight + 'px';
+  }
+  if(!CSS.supports('height', '100dvh')){
+    fixHeight();
+    window.addEventListener('resize', fixHeight);
+  }
+})();
 </script>
 </body>
 </html>
